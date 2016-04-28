@@ -93,7 +93,7 @@ void drawLine(float x, float y){
     drawPoint(0.0,0.0); // el origen es la articulacion
 }
 
-// DIBUJA LA PIERNA
+// DIBUJA PIERNA
 void drawLeg(float x, float y){
     glPushMatrix();
         glTranslatef(x,0.0,0.0); //muevo el eje de la pierna izq
@@ -114,7 +114,7 @@ void drawLeg(float x, float y){
     glPopMatrix();
 }
 
-// DIBUJA EL BRAZO
+// DIBUJA BRAZO
 void drawArm(float x, float xt){
     glPushMatrix();
         glTranslatef(xt,3.0,0.0);
@@ -215,6 +215,35 @@ void render(){
     glutSwapBuffers();
 }
 
+
+void selectArea (unsigned char key, int xmouse, int ymouse){   
+    switch (key){
+        case '1':
+            glClearColor (1.0, 0.0, 0.0, 0.0);
+        break;
+        case '2': 
+            glClearColor (0.0, 1.0, 0.0, 0.0);
+        break;
+        case '3':
+            glClearColor (1.0, 0.0, 0.0, 0.0);
+        break;
+ 
+        case '4': 
+            glClearColor (0.0, 1.0, 0.0, 0.0);
+        break;
+        case '5':
+            glClearColor (1.0, 0.0, 0.0, 0.0);
+        break;
+ 
+        case '6': 
+            glClearColor (0.0, 1.0, 0.0, 0.0);
+        break;
+        default:
+        break;
+    }
+   glutPostRedisplay(); //request display() call ASAP
+}
+
 int main (int argc, char** argv) {
 
     glutInit(&argc, argv);
@@ -224,6 +253,8 @@ int main (int argc, char** argv) {
     glutReshapeFunc(changeViewport);
     glutDisplayFunc(render);
 
+
+    glutKeyboardFunc(selectArea);
     /*
     GLenum err = glewInit();
     if (GLEW_OK != err) {

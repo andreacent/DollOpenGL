@@ -91,6 +91,7 @@ void drawLine(float x, float y){
         glVertex2f(0.0, 0.0);
         glVertex2f(x, y);
     glEnd();
+    drawPoint(0.0,0.0); // el origen es la articulacion
 }
 
 
@@ -138,19 +139,16 @@ void render(){
         glTranslatef(-1.5,0.0,0.0); //muevo el eje de la pierna izq
         glColor3f(1.0,1.0,0.0);
         drawLine(0.0, -4.0);
-        drawPoint(0.0,0.0);
         //rodilla
         glPushMatrix();
             glTranslatef(0.0,-4.0,0.0);
             glColor3f(1.0,1.0,0.0);
             drawLine(0.0, -4.0);
-            drawPoint(0.0,0.0);
             //tobillo
             glPushMatrix();
                 glTranslatef(0.0,-4.0,0.0);
                 glColor3f(1.0,1.0,0.0);
                 drawLine(-1.5,0.0);
-                drawPoint(0.0,0.0);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -160,19 +158,16 @@ void render(){
         glTranslatef(1.5,0.0,0.0); //muevo el eje de la pierna der
         glColor3f(1.0,1.0,0.0);
         drawLine(0.0, -4.0);
-        drawPoint(0.0,0.0);
         //rodilla
         glPushMatrix();
             glTranslatef(0.0,-4.0,0.0);
             glColor3f(1.0,1.0,0.0);
             drawLine(0.0, -4.0);
-            drawPoint(0.0,0.0);
             //tobillo
             glPushMatrix();
                 glTranslatef(0.0,-4.0,0.0);
                 glColor3f(1.0,1.0,0.0);
                 drawLine(1.5,0.0);
-                drawPoint(0.0,0.0);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();
@@ -195,7 +190,6 @@ void render(){
             glColor3f(1.0,1.0,0.0);
             //ejesCoordenada(1.0); //borrar
             drawCircle(0.0,1.5,1.5);
-            drawPoint(0.0,0.0);
         glPopMatrix();
 
         // Brazo izquierdo
@@ -203,19 +197,16 @@ void render(){
             glTranslatef(-2.0,3.0,0.0);
             glColor3f(1.0,1.0,0.0);
             drawLine(-2.5,0.0);
-            drawPoint(0.0,0.0);
             //codo
             glPushMatrix();
                 glTranslatef(-2.5,0.0,0.0);
                 glColor3f(1.0,1.0,0.0);
                 drawLine(-2.5,0.0);
-                drawPoint(0.0,0.0);
                 //muneca
                 glPushMatrix();
                     glTranslatef(-2.5,0.0,0.0);
                     glColor3f(1.0,1.0,0.0);
                     drawLine(0.0,1.0);
-                    drawPoint(0.0,0.0);
                 glPopMatrix();
             glPopMatrix();
         glPopMatrix();  
@@ -225,19 +216,16 @@ void render(){
             glTranslatef(2.0,3.0,0.0);
             glColor3f(1.0,1.0,0.0);
             drawLine(2.5,0.0);
-            drawPoint(0.0,0.0);
             //codo
             glPushMatrix();
                 glTranslatef(2.5,0.0,0.0);
                 glColor3f(1.0,1.0,0.0);
                 drawLine(2.5,0.0);
-                drawPoint(0.0,0.0);
                 //muneca
                 glPushMatrix();
                     glTranslatef(2.5,0.0,0.0);
                     glColor3f(1.0,1.0,0.0);
                     drawLine(0.0,1.0);
-                    drawPoint(0.0,0.0);
                 glPopMatrix();
             glPopMatrix();
         glPopMatrix();  

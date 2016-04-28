@@ -148,11 +148,8 @@ void render(){
             //tobillo
             glPushMatrix();
                 glTranslatef(0.0,-4.0,0.0);
-                glBegin(GL_LINES);
-                    glColor3f(1.0,1.0,0.0);
-                    glVertex2f(0.0,0.0);
-                    glVertex2f(-1.5,0.0);
-                glEnd();
+                glColor3f(1.0,1.0,0.0);
+                drawLine(-1.5,0.0);
                 drawPoint(0.0,0.0);
             glPopMatrix();
         glPopMatrix();
@@ -161,29 +158,20 @@ void render(){
     // Pierna Derecho
     glPushMatrix();
         glTranslatef(1.5,0.0,0.0); //muevo el eje de la pierna der
-        glBegin(GL_LINES);
-            glColor3f(1.0,1.0,0.0);
-            glVertex2f(0.0, 0.0);
-            glVertex2f(0.0, -4.0);
-        glEnd();
+        glColor3f(1.0,1.0,0.0);
+        drawLine(0.0, -4.0);
         drawPoint(0.0,0.0);
         //rodilla
         glPushMatrix();
             glTranslatef(0.0,-4.0,0.0);
-            glBegin(GL_LINES);
-                glColor3f(1.0,1.0,0.0);
-                glVertex2f(0.0,0.0);
-                glVertex2f(0.0,-4.0);
-            glEnd();
+            glColor3f(1.0,1.0,0.0);
+            drawLine(0.0, -4.0);
             drawPoint(0.0,0.0);
             //tobillo
             glPushMatrix();
                 glTranslatef(0.0,-4.0,0.0);
-                glBegin(GL_LINES);
-                    glColor3f(1.0,1.0,0.0);
-                    glVertex2f(0.0,0.0);
-                    glVertex2f(1.5,0.0);
-                glEnd();
+                glColor3f(1.0,1.0,0.0);
+                drawLine(1.5,0.0);
                 drawPoint(0.0,0.0);
             glPopMatrix();
         glPopMatrix();
@@ -213,29 +201,20 @@ void render(){
         // Brazo izquierdo
         glPushMatrix();
             glTranslatef(-2.0,3.0,0.0);
-            glBegin(GL_LINES);
-                glColor3f(1.0,1.0,0.0);
-                glVertex2f(0.0,0.0);
-                glVertex2f(-2.5,0.0);
-            glEnd();
+            glColor3f(1.0,1.0,0.0);
+            drawLine(-2.5,0.0);
             drawPoint(0.0,0.0);
             //codo
             glPushMatrix();
                 glTranslatef(-2.5,0.0,0.0);
-                glBegin(GL_LINES);
-                    glColor3f(1.0,1.0,0.0);
-                    glVertex2f(0.0,0.0);
-                    glVertex2f(-2.5,0.0);
-                glEnd();
+                glColor3f(1.0,1.0,0.0);
+                drawLine(-2.5,0.0);
                 drawPoint(0.0,0.0);
                 //muneca
                 glPushMatrix();
                     glTranslatef(-2.5,0.0,0.0);
-                    glBegin(GL_LINES);
-                        glColor3f(1.0,1.0,0.0);
-                        glVertex2f(0.0,0.0);
-                        glVertex2f(0.0,1.0);
-                    glEnd();
+                    glColor3f(1.0,1.0,0.0);
+                    drawLine(0.0,1.0);
                     drawPoint(0.0,0.0);
                 glPopMatrix();
             glPopMatrix();
@@ -244,38 +223,24 @@ void render(){
         // Brazo derecho
         glPushMatrix();
             glTranslatef(2.0,3.0,0.0);
-            glBegin(GL_LINES);
-                glColor3f(1.0,1.0,0.0);
-                glVertex2f(0.0,0.0);
-                glVertex2f(2.5,0.0);
-            glEnd();
+            glColor3f(1.0,1.0,0.0);
+            drawLine(2.5,0.0);
             drawPoint(0.0,0.0);
             //codo
             glPushMatrix();
                 glTranslatef(2.5,0.0,0.0);
-                glBegin(GL_LINES);
-                    glColor3f(1.0,1.0,0.0);
-                    glVertex2f(0.0,0.0);
-                    glVertex2f(2.5,0.0);
-                glEnd();
+                glColor3f(1.0,1.0,0.0);
+                drawLine(2.5,0.0);
                 drawPoint(0.0,0.0);
                 //muneca
                 glPushMatrix();
                     glTranslatef(2.5,0.0,0.0);
-                    glBegin(GL_LINES);
-                        glColor3f(1.0,1.0,0.0);
-                        glVertex2f(0.0,0.0);
-                        glVertex2f(0.0,1.0);
-                    glEnd();
+                    glColor3f(1.0,1.0,0.0);
+                    drawLine(0.0,1.0);
                     drawPoint(0.0,0.0);
                 glPopMatrix();
             glPopMatrix();
-        glPopMatrix();   
-
-        drawPoint(0.0,0.0);
-    glPopMatrix(); 
-    
-    
+        glPopMatrix();  
 
     glutSwapBuffers();
 }

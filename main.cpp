@@ -85,6 +85,15 @@ void drawPoint(float x, float y){
     glPointSize(1.0);
 }
 
+// DIBUJA RECTAS
+void drawLine(float x, float y){
+    glBegin(GL_LINES);
+        glVertex2f(0.0, 0.0);
+        glVertex2f(x, y);
+    glEnd();
+}
+
+
 void render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -127,20 +136,14 @@ void render(){
     // Pierna Izquierda
     glPushMatrix();
         glTranslatef(-1.5,0.0,0.0); //muevo el eje de la pierna izq
-        glBegin(GL_LINES);
-            glColor3f(1.0,1.0,0.0);
-            glVertex2f(0.0, 0.0);
-            glVertex2f(0.0, -4.0);
-        glEnd();
+        glColor3f(1.0,1.0,0.0);
+        drawLine(0.0, -4.0);
         drawPoint(0.0,0.0);
         //rodilla
         glPushMatrix();
             glTranslatef(0.0,-4.0,0.0);
-            glBegin(GL_LINES);
-                glColor3f(1.0,1.0,0.0);
-                glVertex2f(0.0,0.0);
-                glVertex2f(0.0,-4.0);
-            glEnd();
+            glColor3f(1.0,1.0,0.0);
+            drawLine(0.0, -4.0);
             drawPoint(0.0,0.0);
             //tobillo
             glPushMatrix();

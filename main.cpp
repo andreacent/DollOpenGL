@@ -154,6 +154,10 @@ void drawBack(){
     glPopMatrix();
 }
 
+void changeAngle(float angle, char x){
+
+}
+
 void render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -182,7 +186,7 @@ void render(){
     /* END Render Grid */
 
     glTranslatef(0.0,-1.5,0.0); 
-    glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_POINT_SMOOTH); //para puntos redondos
 
     // Parte inferior del cuerpo
     glBegin(GL_LINES);
@@ -208,24 +212,52 @@ void render(){
 
 void selectArea (unsigned char key, int xmouse, int ymouse){   
     switch (key){
-        case '1':
+        case 1:
             glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
-        case '2': 
+        case 2: 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
-        case '3':
+        case 3:
             glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
  
-        case '4': 
+        case 4: 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
-        case '5':
+        case 5:
             glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
  
-        case '6': 
+        case 6: 
+            glClearColor (0.0, 1.0, 0.0, 0.0);
+        break;
+        default:
+        break;
+    }
+   glutPostRedisplay(); 
+}
+
+void selectExt (unsigned char key, int xmouse, int ymouse){   
+    switch (key){
+        case 'A':
+
+        break;
+        case 'Z': 
+            glClearColor (0.0, 1.0, 0.0, 0.0);
+        break;
+        case 'S':
+            glClearColor (1.0, 0.0, 0.0, 0.0);
+        break;
+ 
+        case 'X': 
+            glClearColor (0.0, 1.0, 0.0, 0.0);
+        break;
+        case 'D':
+            glClearColor (1.0, 0.0, 0.0, 0.0);
+        break;
+ 
+        case 'C': 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
         default:

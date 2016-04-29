@@ -27,7 +27,7 @@ GLfloat const blue[3]    = {0,0,1},
               white[3]   = {1,1,1}, 
               green[3]   = {0,1,0}, 
               yellow[3]  = {1,1,0}; 
-
+//colores de extremidades
 GLfloat const   *colT,*colC,*colBi,*colBd,*colMi,
                 *colMd,*colCi,*colCd,*colPi,*colPd,
                 *colRi,*colRd,*colTi,*colTd;
@@ -204,6 +204,7 @@ void render(){
         glEnd();
     glPopMatrix(); */
     /* END Render Grid */
+
     initializeColor();
     glTranslatef(0.0,-1.5,0.0); 
     glEnable(GL_POINT_SMOOTH); //para puntos redondos
@@ -230,56 +231,39 @@ void render(){
     glutSwapBuffers();
 }
 
-/******************************* MOVIMIENTO *****************************/
+/******************************* ROTACION *****************************/
 //Incrementa o decrementa el angulo de la extremidad superior
 void supExt(int n){
     switch (area){
-        case '1':
-            rotPd+=n*ang; break;
-        case '2': 
-            rotPi+=n*ang; break;
-        case '3':
-            rotBd+=n*ang; break;
-        case '4': 
-            rotBi+=n*ang; break;
-        case '5':
-            rotC+=n*ang;  break;
-        default:
-        break;
+        case '1': rotPd+=n*ang; break;
+        case '2': rotPi+=n*ang; break;
+        case '3': rotBd+=n*ang; break;
+        case '4': rotBi+=n*ang; break;
+        case '5': rotC +=n*ang; break;
+        default: break;
     }
 }
 
 //Incrementa o decrementa el angulo de la extremidad del medio
 void medExt(int n){
     switch (area){
-        case '1':
-            rotRd+=n*ang; break;
-        case '2': 
-            rotRi+=n*ang; break;
-        case '3':
-            rotCd+=n*ang; break;
-        case '4': 
-            rotCi+=n*ang; break;
-        case '6': 
-            rotT+=ang;    break;
-        default:
-        break;
+        case '1': rotRd+=n*ang; break;
+        case '2': rotRi+=n*ang; break;
+        case '3': rotCd+=n*ang; break;
+        case '4': rotCi+=n*ang; break;
+        case '6': rotT +=ang;   break;
+        default: break;
     }
 }
 
 //Incrementa o decrementa el angulo de la extremidad inferior
 void infExt(int n){
     switch (area){
-        case '1':
-            rotTd+=n*ang; break;
-        case '2': 
-            rotTi+=n*ang; break;
-        case '3':
-            rotMd+=n*ang; break;
-        case '4': 
-            rotMi+=n*ang; break;
-        default:
-        break;
+        case '1': rotTd+=n*ang; break;
+        case '2': rotTi+=n*ang; break;
+        case '3': rotMd+=n*ang; break;
+        case '4': rotMi+=n*ang; break;
+        default: break;
     }
 }
 
@@ -298,8 +282,7 @@ void selectExt (unsigned char key, int xmouse, int ymouse){
             infExt(1);  break; 
         case 'C': //Rotar extremidad inferior horario. 
             infExt(-1); break;
-        default:
-        break;
+        default: break;
     }
     //initializeColor();
     glutPostRedisplay(); 
@@ -326,8 +309,7 @@ void selectArea (unsigned char key, int xmouse, int ymouse){
         case '6': 
             colT = white; 
         break;
-        default:
-        break;
+        default: break;
     } 
     glutPostRedisplay(); 
 }
@@ -342,7 +324,8 @@ int main (int argc, char** argv) {
     glutReshapeFunc(changeViewport);
     glutDisplayFunc(render);
 
-    glutKeyboardFunc(selectArea);
+    //glutKeyboardFunc(selectArea);
+    glutKeyboardUpFunc(selectArea);
     glutKeyboardFunc(selectExt);
 
     /*

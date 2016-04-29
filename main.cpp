@@ -9,6 +9,15 @@ using namespace std;
 #define DEF_floorGridXSteps 10.0f
 #define DEF_floorGridZSteps 10.0f
 
+//INICIALIZO LOS ANGULOS
+float   rotD=0.0,rotC=0.0,   //dorso, cabeza
+        rotBi=0.0,rotBd=0.0, //brazos
+        rotMi=0.0,rotMd=0.0, //muneca
+        rotCi=0.0,rotCd=0.0, //codo
+        rotPi=0.0,rotPd=0.0, //piernas
+        rotRi=0.0,rotRd=0.0, //rodilla
+        rotTi=0.0,rotTd=0.0; //tobillo
+
 void ejesCoordenada(float w) {
     
     glLineWidth(w);
@@ -94,20 +103,23 @@ void drawLine(float x, float y){
 }
 
 // DIBUJA PIERNA
-void drawLeg(float x, float y){
+void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT){
     glPushMatrix();
         glTranslatef(x,0.0,0.0); //muevo el eje de la pierna izq
+        glRotatef(rotateP,0,0,1);
         glColor3f(0,0,1);
         drawLine(0.0, y);
         //rodilla
         glColor3f(0,1,0);
         glPushMatrix();
             glTranslatef(0.0,y,0.0);
+            glRotatef(rotateR,0,0,1);
             drawLine(0.0, y);
             //tobillo
             glColor3f(1,1,0);
             glPushMatrix();
                 glTranslatef(0.0,y,0.0);
+                glRotatef(rotateT,0,0,1);
                 drawLine(x,0.0);
             glPopMatrix();
         glPopMatrix();
@@ -115,24 +127,63 @@ void drawLeg(float x, float y){
 }
 
 // DIBUJA BRAZO
-void drawArm(float x, float xt){
+void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM){
     glPushMatrix();
         glTranslatef(xt,3.0,0.0);
+        glRotatef(rotateB,0,0,1);
         glColor3f(0,0,1);
         drawLine(x,0.0);
         //codo
         glColor3f(0,1,0);
         glPushMatrix();
             glTranslatef(x,0.0,0.0);
+            glRotatef(rotateC,0,0,1);
             drawLine(x,0.0);
             //muneca
             glColor3f(1,1,0);
             glPushMatrix();
                 glTranslatef(x,0.0,0.0);
+                glRotatef(rotateM,0,0,1);
                 drawLine(0.0,1.0);
             glPopMatrix();
         glPopMatrix();
     glPopMatrix();  
+}
+
+// DIBUJA DORSO
+void drawDorso(){
+    glPushMatrix();
+        glTranslatef(0.0,3.5,0.0); //muevo el eje del dorso
+        glRotatef(rotD,0,0,1);
+
+        //dorso y hombros
+        glBegin(GL_LINES);
+            glColor3f(0,1,1);
+            glVertex2f(0.0, 0.0);
+            glVertex2f(0.0, 3.5);
+            glColor3f(1,0,1);
+            glVertex2f(-2.0, 3.0);
+            glVertex2f(2.0, 3.0);
+        glEnd();
+        drawPoint(0.0,0.0);
+
+        // Cabeza
+        glPushMatrix();
+            glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
+            glRotatef(rotC,0,0,1);
+            glColor3f(0,1,1);
+            //ejesCoordenada(1.0); //borrar
+            drawCircle(0.0,1.5,1.5);
+            drawPoint(0.0,0.0);
+        glPopMatrix();
+
+        // Brazo izquierdo
+        drawArm(-2.5, -2.0,rotBi,rotCi,rotMi);
+
+        // Brazo derecho
+        drawArm(2.5, 2.0,rotBd,rotCd,rotMd);
+
+    glPopMatrix();
 }
 
 void render(){
@@ -175,42 +226,13 @@ void render(){
     glEnd();
 
     // Pierna Izquierda
-    drawLeg(-1.5, -4.0);
+    drawLeg(-1.5, -4.0,rotPi,rotRi,rotTi);
 
     // Pierna Derecho
-    drawLeg(1.5, -4.0);
+    drawLeg(1.5, -4.0,rotPd,rotRd,rotTd);
 
     // Parte superior del cuerpo
-    glPushMatrix();
-        glTranslatef(0.0,3.5,0.0); //muevo el eje del dorso
-
-        //dorso y hombros
-        glBegin(GL_LINES);
-            glColor3f(0,1,1);
-            glVertex2f(0.0, 0.0);
-            glVertex2f(0.0, 3.5);
-            glColor3f(1,0,1);
-            glVertex2f(-2.0, 3.0);
-            glVertex2f(2.0, 3.0);
-        glEnd();
-        drawPoint(0.0,0.0);
-
-        // Cabeza
-        glPushMatrix();
-            glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
-            glColor3f(0,1,1);
-            //ejesCoordenada(1.0); //borrar
-            drawCircle(0.0,1.5,1.5);
-            drawPoint(0.0,0.0);
-        glPopMatrix();
-
-        // Brazo izquierdo
-        drawArm(-2.5, -2.0);
-
-        // Brazo derecho
-        drawArm(2.5, 2.0);
-
-    glPopMatrix();
+    drawDorso();
 
     glutSwapBuffers();
 }
@@ -245,6 +267,11 @@ void selectArea (unsigned char key, int xmouse, int ymouse){
 }
 
 int main (int argc, char** argv) {
+    rotBi=30.0;
+    rotPd=30.0;
+    rotCd=25.0;
+    rotTi=40.0;
+    //rotTd=-40.0;
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);

@@ -21,6 +21,16 @@ float   rotT=0.0,rotC=0.0,   //Torso, cabeza
 
 char    area;
 
+//COLORES
+GLfloat const red[3]     = {1,0,0}, 
+              blue[3]    = {0,0,1}, 
+              cyan[3]    = {0,1,1}, 
+              white[3]   = {1,1,1}, 
+              green[3]   = {0,1,0}, 
+              yellow[3]  = {1,1,0}, 
+              magenta[3] = {1,0,1}; 
+
+
 void changeViewport(int w, int h) {
     float aspectratio;
     aspectratio = (float) w / (float) h ;
@@ -51,7 +61,7 @@ void drawCircle(float px, float py, float radio) {
 
 //  DIBUJA UN PUNTO (ARTICULACION)
 void drawPoint(float x, float y){
-    glColor3f(1,0,0);
+    glColor3fv(red);
     glPointSize(8.0);
     glBegin(GL_POINTS);
         glVertex2f(x, y);
@@ -73,16 +83,16 @@ void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT){
     glPushMatrix();
         glTranslatef(x,0.0,0.0); //muevo el eje de la pierna izq
         glRotatef(rotateP,0,0,1);
-        glColor3f(0,0,1);
+        glColor3fv(blue);
         drawLine(0.0, y);
         //rodilla
-        glColor3f(0,1,0);
+        glColor3fv(green);
         glPushMatrix();
             glTranslatef(0.0,y,0.0);
             glRotatef(rotateR,0,0,1);
             drawLine(0.0, y);
             //tobillo
-            glColor3f(1,1,0);
+            glColor3fv(yellow);
             glPushMatrix();
                 glTranslatef(0.0,y,0.0);
                 glRotatef(rotateT,0,0,1);
@@ -97,16 +107,16 @@ void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM){
     glPushMatrix();
         glTranslatef(xt,3.0,0.0);
         glRotatef(rotateB,0,0,1);
-        glColor3f(0,0,1);
+        glColor3fv(blue);
         drawLine(x,0.0);
         //codo
-        glColor3f(0,1,0);
+        glColor3fv(green);
         glPushMatrix();
             glTranslatef(x,0.0,0.0);
             glRotatef(rotateC,0,0,1);
             drawLine(x,0.0);
             //muneca
-            glColor3f(1,1,0);
+            glColor3fv(yellow);
             glPushMatrix();
                 glTranslatef(x,0.0,0.0);
                 glRotatef(rotateM,0,0,1);
@@ -121,7 +131,7 @@ void drawHead(){
     glPushMatrix();
         glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
         glRotatef(rotC,0,0,1);
-        glColor3f(0,1,1);
+        glColor3fv(cyan);
         //ejesCoordenada(1.0); //borrar
         drawCircle(0.0,1.5,1.5);
         drawPoint(0.0,0.0);
@@ -136,10 +146,10 @@ void drawBack(){
 
         //Torso y hombros
         glBegin(GL_LINES);
-            glColor3f(0,1,1);
+            glColor3fv(cyan);
             glVertex2f(0.0, 0.0);
             glVertex2f(0.0, 3.5);
-            glColor3f(1,0,1);
+            glColor3fv(magenta);
             glVertex2f(-2.0, 3.0);
             glVertex2f(2.0, 3.0);
         glEnd();
@@ -189,7 +199,7 @@ void render(){
 
     // Parte inferior del cuerpo
     glBegin(GL_LINES);
-        glColor3f(0,1,1);
+        glColor3fv(cyan);
         glVertex2f(0.0, 0.0);
         glVertex2f(0.0, 3.5);
         glVertex2f(-1.5, 0.0);

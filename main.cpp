@@ -22,14 +22,23 @@ float   rotT=0.0,rotC=0.0,   //Torso, cabeza
 char    area;
 
 //COLORES
-GLfloat const red[3]     = {1,0,0}, 
-              blue[3]    = {0,0,1}, 
+GLfloat const blue[3]    = {0,0,1}, 
               cyan[3]    = {0,1,1}, 
               white[3]   = {1,1,1}, 
               green[3]   = {0,1,0}, 
-              yellow[3]  = {1,1,0}, 
-              magenta[3] = {1,0,1}; 
+              yellow[3]  = {1,1,0}; 
 
+GLfloat const   *colT,*colC,*colBi,*colBd,*colMi,
+                *colMd,*colCi,*colCd,*colPi,*colPd,
+                *colRi,*colRd,*colTi,*colTd;
+
+// INICIALIZO LOS COLORES
+void initializeColor(){
+    colT  = cyan; colC = cyan; 
+    colBi = blue; colBd = blue; colPi = blue; colPd = blue; 
+    colMi = yellow; colMd = yellow; colTi = yellow; colTd = yellow; 
+    colCi = green; colCd = green; colRi = green; colRd = green;
+}
 
 void changeViewport(int w, int h) {
     float aspectratio;
@@ -61,7 +70,7 @@ void drawCircle(float px, float py, float radio) {
 
 //  DIBUJA UN PUNTO (ARTICULACION)
 void drawPoint(float x, float y){
-    glColor3fv(red);
+    glColor3f(1,0,0);
     glPointSize(8.0);
     glBegin(GL_POINTS);
         glVertex2f(x, y);
@@ -77,22 +86,23 @@ void drawLine(float x, float y){
     drawPoint(0.0,0.0); // el origen es la articulacion
 }
 
-/****************** CUERPO ****************/
+/***************************** DIBUJAR CUERPO ********************************/
 // DIBUJA PIERNA
-void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT){
+void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT,
+             GLfloat const cP[3], GLfloat const cR[3], GLfloat const cT[3]){
     glPushMatrix();
         glTranslatef(x,0.0,0.0); //muevo el eje de la pierna izq
         glRotatef(rotateP,0,0,1);
-        glColor3fv(blue);
+        glColor3fv(cP);
         drawLine(0.0, y);
         //rodilla
-        glColor3fv(green);
+        glColor3fv(cR);
         glPushMatrix();
             glTranslatef(0.0,y,0.0);
             glRotatef(rotateR,0,0,1);
             drawLine(0.0, y);
             //tobillo
-            glColor3fv(yellow);
+            glColor3fv(cT);
             glPushMatrix();
                 glTranslatef(0.0,y,0.0);
                 glRotatef(rotateT,0,0,1);
@@ -103,20 +113,21 @@ void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT){
 }
 
 // DIBUJA BRAZO
-void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM){
+void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM,
+             GLfloat const cB[3], GLfloat const cC[3], GLfloat const cM[3]){
     glPushMatrix();
         glTranslatef(xt,3.0,0.0);
         glRotatef(rotateB,0,0,1);
-        glColor3fv(blue);
+        glColor3fv(cB);
         drawLine(x,0.0);
         //codo
-        glColor3fv(green);
+        glColor3fv(cC);
         glPushMatrix();
             glTranslatef(x,0.0,0.0);
             glRotatef(rotateC,0,0,1);
             drawLine(x,0.0);
             //muneca
-            glColor3fv(yellow);
+            glColor3fv(cM);
             glPushMatrix();
                 glTranslatef(x,0.0,0.0);
                 glRotatef(rotateM,0,0,1);
@@ -131,7 +142,7 @@ void drawHead(){
     glPushMatrix();
         glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
         glRotatef(rotC,0,0,1);
-        glColor3fv(cyan);
+        glColor3fv(colC);
         //ejesCoordenada(1.0); //borrar
         drawCircle(0.0,1.5,1.5);
         drawPoint(0.0,0.0);
@@ -146,10 +157,10 @@ void drawBack(){
 
         //Torso y hombros
         glBegin(GL_LINES);
-            glColor3fv(cyan);
+            glColor3fv(colT);
             glVertex2f(0.0, 0.0);
             glVertex2f(0.0, 3.5);
-            glColor3fv(magenta);
+            glColor3f(1,0,1);
             glVertex2f(-2.0, 3.0);
             glVertex2f(2.0, 3.0);
         glEnd();
@@ -159,10 +170,10 @@ void drawBack(){
         drawHead();
 
         // Brazo izquierdo
-        drawArm(2.5, 2.0,rotBi,rotCi,rotMi);
+        drawArm(2.5, 2.0,rotBi,rotCi,rotMi,colBi,colCi,colMi);
 
         // Brazo derecho
-        drawArm(-2.5, -2.0,rotBd,rotCd,rotMd);
+        drawArm(-2.5, -2.0,rotBd,rotCd,rotMd,colBd,colCd,colMd);
 
     glPopMatrix();
 }
@@ -193,24 +204,25 @@ void render(){
         glEnd();
     glPopMatrix(); */
     /* END Render Grid */
-
+    initializeColor();
     glTranslatef(0.0,-1.5,0.0); 
     glEnable(GL_POINT_SMOOTH); //para puntos redondos
 
     // Parte inferior del cuerpo
     glBegin(GL_LINES);
-        glColor3fv(cyan);
+        glColor3fv(colT);
         glVertex2f(0.0, 0.0);
         glVertex2f(0.0, 3.5);
+        glColor3fv(cyan);
         glVertex2f(-1.5, 0.0);
         glVertex2f(1.5, 0.0);
     glEnd();
 
     // Pierna Izquierda
-    drawLeg(1.5, -4.0,rotPi,rotRi,rotTi);
+    drawLeg(1.5, -4.0,rotPi,rotRi,rotTi,colPi,colRi,colTi);
 
     // Pierna Derecho
-    drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd);
+    drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd,colPd,colRd,colTd);
 
     // Parte superior del cuerpo
     drawBack();
@@ -218,6 +230,7 @@ void render(){
     glutSwapBuffers();
 }
 
+/******************************* MOVIMIENTO *****************************/
 //Incrementa o decrementa el angulo de la extremidad superior
 void supExt(int n){
     switch (area){
@@ -270,6 +283,7 @@ void infExt(int n){
     }
 }
 
+/******************************* KEYBOARD *****************************/
 void selectExt (unsigned char key, int xmouse, int ymouse){   
     switch (key){
         case 'A': //Rotar extremidad superior anti horario.  
@@ -287,44 +301,39 @@ void selectExt (unsigned char key, int xmouse, int ymouse){
         default:
         break;
     }
-   glutPostRedisplay(); 
+    //initializeColor();
+    glutPostRedisplay(); 
 }
 
-
 void selectArea (unsigned char key, int xmouse, int ymouse){  
-    area=key; 
+    //area=key; 
     switch (key){
         case '1':
-            glClearColor (1.0, 0.0, 0.0, 0.0);
+            colPd = white; colRd = white; colTd = white;
         break;
         case '2': 
-            glClearColor (0.0, 1.0, 0.0, 0.0);
+            colPi = white; colRi = white; colTi = white;
         break;
         case '3':
-            glClearColor (1.0, 0.0, 0.0, 0.0);
+            colBd = white; colBd = white; colBd = white;
         break;
         case '4': 
-            glClearColor (0.0, 1.0, 0.0, 0.0);
+            colBi = white; colBi = white; colBi = white;
         break;
         case '5':
-            glClearColor (1.0, 0.0, 0.0, 0.0);
+            colC = white; 
         break;
         case '6': 
-            glClearColor (0.0, 1.0, 0.0, 0.0);
+            colT = white; 
         break;
         default:
         break;
-    }
-   glutPostRedisplay(); 
+    } 
+    glutPostRedisplay(); 
 }
 
 int main (int argc, char** argv) {
     area='2';
-    infExt(-1);
-    area='4';
-    infExt(-1);
-    supExt(1);
-    medExt(-1);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
@@ -334,6 +343,8 @@ int main (int argc, char** argv) {
     glutDisplayFunc(render);
 
     glutKeyboardFunc(selectArea);
+    glutKeyboardFunc(selectExt);
+
     /*
     GLenum err = glewInit();
     if (GLEW_OK != err) {

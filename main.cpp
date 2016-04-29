@@ -10,13 +10,16 @@ using namespace std;
 #define DEF_floorGridZSteps 12.0f
 
 //INICIALIZO LOS ANGULOS
-float   rotD=0.0,rotC=0.0,   //dorso, cabeza
-        rotBi=0.0,rotBd=0.0, //brazos
+float   rotT=0.0,rotC=0.0,   //Torso, cabeza
+        rotBi=0.0,rotBd=0.0, //hombro
         rotMi=0.0,rotMd=0.0, //muneca
         rotCi=0.0,rotCd=0.0, //codo
-        rotPi=0.0,rotPd=0.0, //piernas
+        rotPi=0.0,rotPd=0.0, //pierna
         rotRi=0.0,rotRd=0.0, //rodilla
-        rotTi=0.0,rotTd=0.0; //tobillo
+        rotTi=0.0,rotTd=0.0, //tobillo
+        ang = 30.0;          //angulo
+        
+char    area;
 
 void changeViewport(int w, int h) {
     float aspectratio;
@@ -128,10 +131,10 @@ void drawHead(){
 // DIBUJA PARTE DE ARRIBA DEL CUERPO
 void drawBack(){
     glPushMatrix();
-        glTranslatef(0.0,3.5,0.0); //muevo el eje del dorso
-        glRotatef(rotD,0,0,1);
+        glTranslatef(0.0,3.5,0.0); //muevo el eje del Torso
+        glRotatef(rotT,0,0,1);
 
-        //dorso y hombros
+        //Torso y hombros
         glBegin(GL_LINES);
             glColor3f(0,1,1);
             glVertex2f(0.0, 0.0);
@@ -146,10 +149,10 @@ void drawBack(){
         drawHead();
 
         // Brazo izquierdo
-        drawArm(-2.5, -2.0,rotBi,rotCi,rotMi);
+        drawArm(2.5, 2.0,rotBi,rotCi,rotMi);
 
         // Brazo derecho
-        drawArm(2.5, 2.0,rotBd,rotCd,rotMd);
+        drawArm(-2.5, -2.0,rotBd,rotCd,rotMd);
 
     glPopMatrix();
 }
@@ -198,10 +201,10 @@ void render(){
     glEnd();
 
     // Pierna Izquierda
-    drawLeg(-1.5, -4.0,rotPi,rotRi,rotTi);
+    drawLeg(1.5, -4.0,rotPi,rotRi,rotTi);
 
     // Pierna Derecho
-    drawLeg(1.5, -4.0,rotPd,rotRd,rotTd);
+    drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd);
 
     // Parte superior del cuerpo
     drawBack();
@@ -209,28 +212,91 @@ void render(){
     glutSwapBuffers();
 }
 
+//Incrementa o decrementa el angulo de la extremidad superior
+void supExt(int n){
+    switch (area){
+        case '1':
+            rotPd+=n*ang; 
+        break;
+        case '2': 
+            rotPi+=n*ang; 
+        break;
+        case '3':
+            rotBd+=n*ang;
+        break;
+        case '4': 
+            rotBi+=n*ang;
+        break;
+        case '5':
+            rotC+=n*ang;
+        break;
+        default:
+        break;
+    }
+}
 
-void selectArea (unsigned char key, int xmouse, int ymouse){   
+//Incrementa o decrementa el angulo de la extremidad del medio
+void medExt(int n){
+    switch (area){
+        case '1':
+            rotRd+=n*ang; 
+        break;
+        case '2': 
+            rotRi+=n*ang; 
+        break;
+        case '3':
+            rotCd+=n*ang;
+        break;
+        case '4': 
+            rotCi+=n*ang;
+        break;
+        case '6': 
+            rotT+=ang;
+        break;
+        default:
+        break;
+    }
+}
+
+//Incrementa o decrementa el angulo de la extremidad inferior
+void infExt(int n){
+    switch (area){
+        case '1':
+            rotTd+=n*ang; 
+        break;
+        case '2': 
+            rotTi+=n*ang; 
+        break;
+        case '3':
+            rotMd+=n*ang;
+        break;
+        case '4': 
+            rotMi+=n*ang;
+        break;
+        default:
+        break;
+    }
+}
+
+void selectExt (unsigned char key, int xmouse, int ymouse){   
     switch (key){
-        case 1:
-            glClearColor (1.0, 0.0, 0.0, 0.0);
+        case 'A': //Rotar extremidad superior anti horario.  
+            supExt(1);
         break;
-        case 2: 
-            glClearColor (0.0, 1.0, 0.0, 0.0);
+        case 'Z': //Rotar extremidad superior horario.  
+            supExt(-1);
         break;
-        case 3:
-            glClearColor (1.0, 0.0, 0.0, 0.0);
+        case 'S': //Rotar extremidad del medio antihorario. 
+            medExt(1);
         break;
- 
-        case 4: 
-            glClearColor (0.0, 1.0, 0.0, 0.0);
+        case 'X': //Rotar extremidad del medio horario.  
+            medExt(-1);
         break;
-        case 5:
-            glClearColor (1.0, 0.0, 0.0, 0.0);
-        break;
- 
-        case 6: 
-            glClearColor (0.0, 1.0, 0.0, 0.0);
+        case 'D': //Rotar extremidad inferior anti horario.  
+            infExt(1);
+        break; 
+        case 'C': //Rotar extremidad inferior horario. 
+            infExt(-1);
         break;
         default:
         break;
@@ -238,26 +304,28 @@ void selectArea (unsigned char key, int xmouse, int ymouse){
    glutPostRedisplay(); 
 }
 
-void selectExt (unsigned char key, int xmouse, int ymouse){   
-    switch (key){
-        case 'A':
 
+void selectArea (unsigned char key, int xmouse, int ymouse){  
+    area=key; 
+    switch (key){
+        case '1':
+            glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
-        case 'Z': 
+        case '2': 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
-        case 'S':
+        case '3':
             glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
  
-        case 'X': 
+        case '4': 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
-        case 'D':
+        case '5':
             glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
  
-        case 'C': 
+        case '6': 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
         default:
@@ -267,13 +335,13 @@ void selectExt (unsigned char key, int xmouse, int ymouse){
 }
 
 int main (int argc, char** argv) {
-    rotBi=-90.0;
-    rotMi=90.0;
-    rotPd=90.0;
-    rotCd=25.0;
-    rotTi=90.0;
-    rotTd=-90.0;
     //rotTd=-40.0;
+    area='2';
+    infExt(-1);
+    area='4';
+    infExt(-1);
+    supExt(1);
+    medExt(-1);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);

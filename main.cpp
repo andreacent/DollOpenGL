@@ -6,8 +6,8 @@
 using namespace std;
 
 #define DEF_floorGridScale  1.0f
-#define DEF_floorGridXSteps 10.0f
-#define DEF_floorGridZSteps 10.0f
+#define DEF_floorGridXSteps 12.0f
+#define DEF_floorGridZSteps 12.0f
 
 //INICIALIZO LOS ANGULOS
 float   rotD=0.0,rotC=0.0,   //dorso, cabeza
@@ -18,44 +18,6 @@ float   rotD=0.0,rotC=0.0,   //dorso, cabeza
         rotRi=0.0,rotRd=0.0, //rodilla
         rotTi=0.0,rotTd=0.0; //tobillo
 
-void ejesCoordenada(float w) {
-    
-    glLineWidth(w);
-    glBegin(GL_LINES);
-        glColor3f(1.0,0.0,0.0);
-        glVertex2f(0,10);
-        glVertex2f(0,-10);
-        glColor3f(0.0,0.0,1.0);
-        glVertex2f(10,0);
-        glVertex2f(-10,0);
-    glEnd();
-
-    glLineWidth(w-1.0);
-    int i;
-    glColor3f(0.0,1.0,0.0);
-    glBegin(GL_LINES);
-        for(i = -10; i <=10; i++){
-            if (i!=0) {     
-                if ((i%2)==0){  
-                    glVertex2f(i,0.4);
-                    glVertex2f(i,-0.4);
-
-                    glVertex2f(0.4,i);
-                    glVertex2f(-0.4,i);
-                }else{
-                    glVertex2f(i,0.2);
-                    glVertex2f(i,-0.2);
-
-                    glVertex2f(0.2,i);
-                    glVertex2f(-0.2,i);
-                }
-            }
-        }
-    glEnd();
-
-    glLineWidth(1.0);
-}
-
 void changeViewport(int w, int h) {
     float aspectratio;
     aspectratio = (float) w / (float) h ;
@@ -65,15 +27,16 @@ void changeViewport(int w, int h) {
     glLoadIdentity();
     
     if (w <= h){
-        glOrtho(-10.0, 10.0, -10.0/aspectratio, 10.0/aspectratio, -1.0, 1.0); 
+        glOrtho(-12.0, 12.0, -12.0/aspectratio, 12.0/aspectratio, -1.0, 1.0); 
     }else{
-        glOrtho(-10.0*aspectratio, 10.0*aspectratio, -10.0, 10.0, -1.0, 1.0);
+        glOrtho(-12.0*aspectratio, 12.0*aspectratio, -12.0, 12.0, -1.0, 1.0);
     }
 }
 
 //  DIBUJA CIRCUNFERENCIA
 void drawCircle(float px, float py, float radio) {
     float calx,caly;
+    glPointSize(1.0);
     glBegin(GL_POINTS);
         for(double i=0.0; i<10; i+=0.001){
             calx=radio*cos(i)+px;
@@ -90,7 +53,6 @@ void drawPoint(float x, float y){
     glBegin(GL_POINTS);
         glVertex2f(x, y);
     glEnd();
-    glPointSize(1.0);
 }
 
 // DIBUJA RECTAS
@@ -102,6 +64,7 @@ void drawLine(float x, float y){
     drawPoint(0.0,0.0); // el origen es la articulacion
 }
 
+/****************** CUERPO ****************/
 // DIBUJA PIERNA
 void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT){
     glPushMatrix();
@@ -150,8 +113,20 @@ void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM){
     glPopMatrix();  
 }
 
-// DIBUJA DORSO
-void drawDorso(){
+// DIBUJA CABEZA
+void drawHead(){
+    glPushMatrix();
+        glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
+        glRotatef(rotC,0,0,1);
+        glColor3f(0,1,1);
+        //ejesCoordenada(1.0); //borrar
+        drawCircle(0.0,1.5,1.5);
+        drawPoint(0.0,0.0);
+    glPopMatrix();
+}
+
+// DIBUJA PARTE DE ARRIBA DEL CUERPO
+void drawBack(){
     glPushMatrix();
         glTranslatef(0.0,3.5,0.0); //muevo el eje del dorso
         glRotatef(rotD,0,0,1);
@@ -168,14 +143,7 @@ void drawDorso(){
         drawPoint(0.0,0.0);
 
         // Cabeza
-        glPushMatrix();
-            glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
-            glRotatef(rotC,0,0,1);
-            glColor3f(0,1,1);
-            //ejesCoordenada(1.0); //borrar
-            drawCircle(0.0,1.5,1.5);
-            drawPoint(0.0,0.0);
-        glPopMatrix();
+        drawHead();
 
         // Brazo izquierdo
         drawArm(-2.5, -2.0,rotBi,rotCi,rotMi);
@@ -190,7 +158,6 @@ void render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
     GLfloat zExtent, xExtent, xLocal, zLocal;
     int loopX, loopZ;
 
@@ -214,7 +181,8 @@ void render(){
     glPopMatrix(); */
     /* END Render Grid */
 
-    glTranslatef(0.0,-1.0,0.0); 
+    glTranslatef(0.0,-1.5,0.0); 
+    glEnable(GL_POINT_SMOOTH);
 
     // Parte inferior del cuerpo
     glBegin(GL_LINES);
@@ -232,7 +200,7 @@ void render(){
     drawLeg(1.5, -4.0,rotPd,rotRd,rotTd);
 
     // Parte superior del cuerpo
-    drawDorso();
+    drawBack();
 
     glutSwapBuffers();
 }
@@ -263,14 +231,16 @@ void selectArea (unsigned char key, int xmouse, int ymouse){
         default:
         break;
     }
-   glutPostRedisplay(); //request display() call ASAP
+   glutPostRedisplay(); 
 }
 
 int main (int argc, char** argv) {
-    rotBi=30.0;
-    rotPd=30.0;
+    rotBi=-90.0;
+    rotMi=90.0;
+    rotPd=90.0;
     rotCd=25.0;
-    rotTi=40.0;
+    rotTi=90.0;
+    rotTd=-90.0;
     //rotTd=-40.0;
 
     glutInit(&argc, argv);

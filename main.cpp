@@ -18,7 +18,7 @@ float   rotT=0.0,rotC=0.0,   //Torso, cabeza
         rotRi=0.0,rotRd=0.0, //rodilla
         rotTi=0.0,rotTd=0.0, //tobillo
         ang = 30.0;          //angulo
-        
+
 char    area;
 
 void changeViewport(int w, int h) {
@@ -157,10 +157,6 @@ void drawBack(){
     glPopMatrix();
 }
 
-void changeAngle(float angle, char x){
-
-}
-
 void render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -216,20 +212,15 @@ void render(){
 void supExt(int n){
     switch (area){
         case '1':
-            rotPd+=n*ang; 
-        break;
+            rotPd+=n*ang; break;
         case '2': 
-            rotPi+=n*ang; 
-        break;
+            rotPi+=n*ang; break;
         case '3':
-            rotBd+=n*ang;
-        break;
+            rotBd+=n*ang; break;
         case '4': 
-            rotBi+=n*ang;
-        break;
+            rotBi+=n*ang; break;
         case '5':
-            rotC+=n*ang;
-        break;
+            rotC+=n*ang;  break;
         default:
         break;
     }
@@ -239,20 +230,15 @@ void supExt(int n){
 void medExt(int n){
     switch (area){
         case '1':
-            rotRd+=n*ang; 
-        break;
+            rotRd+=n*ang; break;
         case '2': 
-            rotRi+=n*ang; 
-        break;
+            rotRi+=n*ang; break;
         case '3':
-            rotCd+=n*ang;
-        break;
+            rotCd+=n*ang; break;
         case '4': 
-            rotCi+=n*ang;
-        break;
+            rotCi+=n*ang; break;
         case '6': 
-            rotT+=ang;
-        break;
+            rotT+=ang;    break;
         default:
         break;
     }
@@ -262,17 +248,13 @@ void medExt(int n){
 void infExt(int n){
     switch (area){
         case '1':
-            rotTd+=n*ang; 
-        break;
+            rotTd+=n*ang; break;
         case '2': 
-            rotTi+=n*ang; 
-        break;
+            rotTi+=n*ang; break;
         case '3':
-            rotMd+=n*ang;
-        break;
+            rotMd+=n*ang; break;
         case '4': 
-            rotMi+=n*ang;
-        break;
+            rotMi+=n*ang; break;
         default:
         break;
     }
@@ -281,23 +263,17 @@ void infExt(int n){
 void selectExt (unsigned char key, int xmouse, int ymouse){   
     switch (key){
         case 'A': //Rotar extremidad superior anti horario.  
-            supExt(1);
-        break;
+            supExt(1);  break;
         case 'Z': //Rotar extremidad superior horario.  
-            supExt(-1);
-        break;
+            supExt(-1); break;
         case 'S': //Rotar extremidad del medio antihorario. 
-            medExt(1);
-        break;
+            medExt(1);  break;
         case 'X': //Rotar extremidad del medio horario.  
-            medExt(-1);
-        break;
+            medExt(-1); break;
         case 'D': //Rotar extremidad inferior anti horario.  
-            infExt(1);
-        break; 
+            infExt(1);  break; 
         case 'C': //Rotar extremidad inferior horario. 
-            infExt(-1);
-        break;
+            infExt(-1); break;
         default:
         break;
     }
@@ -317,14 +293,12 @@ void selectArea (unsigned char key, int xmouse, int ymouse){
         case '3':
             glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
- 
         case '4': 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
         case '5':
             glClearColor (1.0, 0.0, 0.0, 0.0);
         break;
- 
         case '6': 
             glClearColor (0.0, 1.0, 0.0, 0.0);
         break;
@@ -335,7 +309,6 @@ void selectArea (unsigned char key, int xmouse, int ymouse){
 }
 
 int main (int argc, char** argv) {
-    //rotTd=-40.0;
     area='2';
     infExt(-1);
     area='4';
@@ -350,7 +323,6 @@ int main (int argc, char** argv) {
     glutReshapeFunc(changeViewport);
     glutDisplayFunc(render);
 
-
     glutKeyboardFunc(selectArea);
     /*
     GLenum err = glewInit();
@@ -359,8 +331,6 @@ int main (int argc, char** argv) {
         return 1;
     }*/
     
-
     glutMainLoop();
     return 0;
-
 }

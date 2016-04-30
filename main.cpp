@@ -219,10 +219,10 @@ void render(){
         glVertex2f(1.5, 0.0);
     glEnd();
 
-    // Pierna Izquierda
+        // Pierna Izquierda
     drawLeg(1.5, -4.0,rotPi,rotRi,rotTi,colPi,colRi,colTi);
 
-    // Pierna Derecho
+        // Pierna Derecho
     drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd,colPd,colRd,colTd);
 
     // Parte superior del cuerpo
@@ -251,7 +251,7 @@ void medExt(int n){
         case '2': rotRi+=n*ang; break;
         case '3': rotCd+=n*ang; break;
         case '4': rotCi+=n*ang; break;
-        case '6': rotT +=ang;   break;
+        case '6': rotT +=n*ang; break;
         default: break;
     }
 }

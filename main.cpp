@@ -53,21 +53,7 @@ void changeColor(){
         case '6': rT=1;  break;
         default: break;
     }
-}
-
-void changeViewport(int w, int h) {
-    float aspectratio;
-    aspectratio = (float) w / (float) h ;
-
-    glViewport(0,0,w,h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    
-    if (w <= h){
-        glOrtho(-12.0, 12.0, -12.0/aspectratio, 12.0/aspectratio, -1.0, 1.0); 
-    }else{
-        glOrtho(-12.0*aspectratio, 12.0*aspectratio, -12.0, 12.0, -1.0, 1.0);
-    }
+    glutPostRedisplay();
 }
 
 //  DIBUJA CIRCUNFERENCIA
@@ -192,6 +178,23 @@ void drawBack(){
     glPopMatrix();
 }
 
+/************************** Viewport **************************/
+void changeViewport(int w, int h) {
+    float aspectratio;
+    aspectratio = (float) w / (float) h ;
+
+    glViewport(0,0,w,h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    
+    if (w <= h){
+        glOrtho(-12.0, 12.0, -12.0/aspectratio, 12.0/aspectratio, -1.0, 1.0); 
+    }else{
+        glOrtho(-12.0*aspectratio, 12.0*aspectratio, -12.0, 12.0, -1.0, 1.0);
+    }
+}
+
+/************************** Display **************************/
 void render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -199,7 +202,6 @@ void render(){
     GLfloat zExtent, xExtent, xLocal, zLocal;
     int loopX, loopZ;
 
-    initializeColor();
     glTranslatef(0.0,-1.5,0.0); 
     glEnable(GL_POINT_SMOOTH); //para puntos redondos
 
@@ -262,7 +264,7 @@ void infExt(int n){
 }
 
 /******************************* KEYBOARD *****************************/
-void controlKey (unsigned char key, int xmouse, int ymouse){  
+void controlKey (unsigned char key, int xmouse, int ymouse){   
     switch (key){
         case 'A': //Rotar extremidad superior anti horario.  
             supExt(1);  break;
@@ -276,18 +278,23 @@ void controlKey (unsigned char key, int xmouse, int ymouse){
             infExt(1);  break; 
         case 'C': //Rotar extremidad inferior horario. 
             infExt(-1); break;
-        default: break;
+        default: 
+            area = key; changeColor(); 
+        break;
     }
+    //initializeColor();
     glutPostRedisplay(); 
 }
 
+/******************************* MAIN *****************************/
 int main (int argc, char** argv) {
-    area=2;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(800,600);
     glutCreateWindow("Opengl");
     glutReshapeFunc(changeViewport);
+
+    initializeColor();
     glutDisplayFunc(render);
 
     glutKeyboardFunc(controlKey);

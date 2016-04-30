@@ -270,6 +270,18 @@ void infExt(int n){
 /******************************* KEYBOARD *****************************/
 void selectExt (unsigned char key, int xmouse, int ymouse){   
     switch (key){
+        case '1':
+            area = key; colPd = white; colRd = white; colTd = white; break;
+        case '2': 
+            area = key; colPi = white; colRi = white; colTi = white; break;
+        case '3':
+            area = key; colBd = white; colBd = white; colBd = white; break;
+        case '4': 
+            area = key; colBi = white; colBi = white; colBi = white; break;
+        case '5':
+            area = key; colC = white; break;
+        case '6': 
+            area = key; colT = white; break;
         case 'A': //Rotar extremidad superior anti horario.  
             supExt(1);  break;
         case 'Z': //Rotar extremidad superior horario.  
@@ -288,35 +300,7 @@ void selectExt (unsigned char key, int xmouse, int ymouse){
     glutPostRedisplay(); 
 }
 
-void selectArea (unsigned char key, int xmouse, int ymouse){  
-    //area=key; 
-    switch (key){
-        case '1':
-            colPd = white; colRd = white; colTd = white;
-        break;
-        case '2': 
-            colPi = white; colRi = white; colTi = white;
-        break;
-        case '3':
-            colBd = white; colBd = white; colBd = white;
-        break;
-        case '4': 
-            colBi = white; colBi = white; colBi = white;
-        break;
-        case '5':
-            colC = white; 
-        break;
-        case '6': 
-            colT = white; 
-        break;
-        default: break;
-    } 
-    glutPostRedisplay(); 
-}
-
 int main (int argc, char** argv) {
-    area='2';
-
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(800,600);
@@ -324,8 +308,6 @@ int main (int argc, char** argv) {
     glutReshapeFunc(changeViewport);
     glutDisplayFunc(render);
 
-    //glutKeyboardFunc(selectArea);
-    glutKeyboardUpFunc(selectArea);
     glutKeyboardFunc(selectExt);
 
     /*

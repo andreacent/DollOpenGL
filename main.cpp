@@ -9,7 +9,7 @@ using namespace std;
 #define DEF_floorGridXSteps 12.0f
 #define DEF_floorGridZSteps 12.0f
 
-//INICIALIZO LOS ANGULOS
+/************************* ANGULOS *************************/
 float   rotT=0.0,rotC=0.0,   //Torso, cabeza
         rotBi=0.0,rotBd=0.0, //hombro
         rotMi=0.0,rotMd=0.0, //muneca
@@ -21,23 +21,38 @@ float   rotT=0.0,rotC=0.0,   //Torso, cabeza
 
 char    area;
 
-//COLORES
-GLfloat const blue[3]    = {0,0,1}, 
-              cyan[3]    = {0,1,1}, 
-              white[3]   = {1,1,1}, 
-              green[3]   = {0,1,0}, 
-              yellow[3]  = {1,1,0}; 
-//colores de extremidades
-GLfloat const   *colT,*colC,*colBi,*colBd,*colMi,
-                *colMd,*colCi,*colCd,*colPi,*colPd,
-                *colRi,*colRd,*colTi,*colTd;
+/************************* COLORES *************************/
+float   rBi, rBd, bBi, bBd, // brazo
+        rPi, rPd, bPi, bPd,  // pierna
+        rCi, rCd, bCi, bCd, // codo
+        rRi, rRd, bRi, bRd, // rodilla
+        bMi, bMd, // muneca
+        bTi, bTd, // tobillo
+        rC, // cabeza
+        rT; //
 
 // INICIALIZO LOS COLORES
 void initializeColor(){
-    colT  = cyan; colC = cyan; 
-    colBi = blue; colBd = blue; colPi = blue; colPd = blue; 
-    colMi = yellow; colMd = yellow; colTi = yellow; colTd = yellow; 
-    colCi = green; colCd = green; colRi = green; colRd = green;
+    rBi=0; rBd=0; bBi=0; bBd=0;
+    rPi=0; rPd=0; bPi=0; bPd=0;
+    rCi=0.2; rCd=0.2; bCi=0.4; bCd=0.4;
+    rRi=0.2; rRd=0.2; bRi=0.4; bRd=0.4;
+    bMi=0; bMd=0; bTi=0; bTd=0;
+    rC=0; rT=0; 
+}
+
+// INICIALIZO LOS COLORES
+void changeColor(){
+    initializeColor();
+    switch (area){
+        case '1': rPd=1; bPd=1; rRd=1; bRd=1; bTd=1; break;
+        case '2': rPi=1; bPi=1; rRi=1; bRi=1; bTi=1; break;
+        case '3': rBd=1; bBd=1; bMd=1; rCd=1; bCd=1; break;
+        case '4': rBi=1; bBi=1; bMi=1; rCi=1; bCi=1; break;
+        case '5': rC=1;  break;
+        case '6': rT=1;  break;
+        default: break;
+    }
 }
 
 void changeViewport(int w, int h) {
@@ -89,20 +104,20 @@ void drawLine(float x, float y){
 /***************************** DIBUJAR CUERPO ********************************/
 // DIBUJA PIERNA
 void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT,
-             GLfloat const cP[3], GLfloat const cR[3], GLfloat const cT[3]){
+             float rP,float rR,float bP,float bR,float bT){
     glPushMatrix();
         glTranslatef(x,0.0,0.0); //muevo el eje de la pierna izq
         glRotatef(rotateP,0,0,1);
-        glColor3fv(cP);
+        glColor3f(rP,1,bP);
         drawLine(0.0, y);
         //rodilla
-        glColor3fv(cR);
+        glColor3f(rR,1,bR);
         glPushMatrix();
             glTranslatef(0.0,y,0.0);
             glRotatef(rotateR,0,0,1);
             drawLine(0.0, y);
             //tobillo
-            glColor3fv(cT);
+            glColor3f(1,1,bT);
             glPushMatrix();
                 glTranslatef(0.0,y,0.0);
                 glRotatef(rotateT,0,0,1);
@@ -114,20 +129,20 @@ void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT,
 
 // DIBUJA BRAZO
 void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM,
-             GLfloat const cB[3], GLfloat const cC[3], GLfloat const cM[3]){
+             float rB,float rC,float bB,float bC,float bM){
     glPushMatrix();
         glTranslatef(xt,3.0,0.0);
         glRotatef(rotateB,0,0,1);
-        glColor3fv(cB);
+        glColor3f(rB,1,bB);
         drawLine(x,0.0);
         //codo
-        glColor3fv(cC);
+        glColor3f(rC,1,bC);
         glPushMatrix();
             glTranslatef(x,0.0,0.0);
             glRotatef(rotateC,0,0,1);
             drawLine(x,0.0);
             //muneca
-            glColor3fv(cM);
+            glColor3f(1,1,bM);
             glPushMatrix();
                 glTranslatef(x,0.0,0.0);
                 glRotatef(rotateM,0,0,1);
@@ -142,8 +157,7 @@ void drawHead(){
     glPushMatrix();
         glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
         glRotatef(rotC,0,0,1);
-        glColor3fv(colC);
-        //ejesCoordenada(1.0); //borrar
+        glColor3f(rC,1,1);
         drawCircle(0.0,1.5,1.5);
         drawPoint(0.0,0.0);
     glPopMatrix();
@@ -157,10 +171,10 @@ void drawBack(){
 
         //Torso y hombros
         glBegin(GL_LINES);
-            glColor3fv(colT);
+            glColor3f(rT,1,1);
             glVertex2f(0.0, 0.0);
             glVertex2f(0.0, 3.5);
-            glColor3f(1,0,1);
+            glColor3f(0,0,1);
             glVertex2f(-2.0, 3.0);
             glVertex2f(2.0, 3.0);
         glEnd();
@@ -170,10 +184,10 @@ void drawBack(){
         drawHead();
 
         // Brazo izquierdo
-        drawArm(2.5, 2.0,rotBi,rotCi,rotMi,colBi,colCi,colMi);
+        drawArm(2.5,2.0,rotBi,rotCi,rotMi,rBi,rCi,bBi,bCi,bMi);
 
         // Brazo derecho
-        drawArm(-2.5, -2.0,rotBd,rotCd,rotMd,colBd,colCd,colMd);
+        drawArm(-2.5,-2.0,rotBd,rotCd,rotMd,rBd,rCd,bBd,bCd,bMd);
 
     glPopMatrix();
 }
@@ -185,45 +199,25 @@ void render(){
     GLfloat zExtent, xExtent, xLocal, zLocal;
     int loopX, loopZ;
 
-    /* Render Grid */
-   /* glPushMatrix();
-        glColor3f( 0.0f, 0.7f, 0.7f );
-        glBegin( GL_LINES );
-            zExtent = DEF_floorGridScale * DEF_floorGridZSteps;
-            for(loopX = -DEF_floorGridXSteps; loopX <= DEF_floorGridXSteps; loopX++ ){
-                xLocal = DEF_floorGridScale * loopX;
-                glVertex3f( xLocal, -zExtent, 0.0f );
-                glVertex3f( xLocal, zExtent,  0.0f );
-            }
-            xExtent = DEF_floorGridScale * DEF_floorGridXSteps;
-            for(loopZ = -DEF_floorGridZSteps; loopZ <= DEF_floorGridZSteps; loopZ++ ){
-                zLocal = DEF_floorGridScale * loopZ;
-                glVertex3f( -xExtent, zLocal, 0.0f );
-                glVertex3f(  xExtent, zLocal, 0.0f );
-            }
-        glEnd();
-    glPopMatrix(); */
-    /* END Render Grid */
-
     initializeColor();
     glTranslatef(0.0,-1.5,0.0); 
     glEnable(GL_POINT_SMOOTH); //para puntos redondos
 
     // Parte inferior del cuerpo
     glBegin(GL_LINES);
-        glColor3fv(colT);
+        glColor3f(rT,1,1);
         glVertex2f(0.0, 0.0);
         glVertex2f(0.0, 3.5);
-        glColor3fv(cyan);
+        glColor3f(0,1,1);
         glVertex2f(-1.5, 0.0);
         glVertex2f(1.5, 0.0);
     glEnd();
 
         // Pierna Izquierda
-    drawLeg(1.5, -4.0,rotPi,rotRi,rotTi,colPi,colRi,colTi);
+    drawLeg(1.5, -4.0,rotPi,rotRi,rotTi,rPi,rRi,bPi,bRi,bTi);
 
         // Pierna Derecho
-    drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd,colPd,colRd,colTd);
+    drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd,rPd,rRd,bPd,bRd,bTd);
 
     // Parte superior del cuerpo
     drawBack();
@@ -268,20 +262,8 @@ void infExt(int n){
 }
 
 /******************************* KEYBOARD *****************************/
-void selectExt (unsigned char key, int xmouse, int ymouse){   
+void controlKey (unsigned char key, int xmouse, int ymouse){  
     switch (key){
-        case '1':
-            area = key; colPd = white; colRd = white; colTd = white; break;
-        case '2': 
-            area = key; colPi = white; colRi = white; colTi = white; break;
-        case '3':
-            area = key; colBd = white; colBd = white; colBd = white; break;
-        case '4': 
-            area = key; colBi = white; colBi = white; colBi = white; break;
-        case '5':
-            area = key; colC = white; break;
-        case '6': 
-            area = key; colT = white; break;
         case 'A': //Rotar extremidad superior anti horario.  
             supExt(1);  break;
         case 'Z': //Rotar extremidad superior horario.  
@@ -296,11 +278,11 @@ void selectExt (unsigned char key, int xmouse, int ymouse){
             infExt(-1); break;
         default: break;
     }
-    //initializeColor();
     glutPostRedisplay(); 
 }
 
 int main (int argc, char** argv) {
+    area=2;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(800,600);
@@ -308,7 +290,7 @@ int main (int argc, char** argv) {
     glutReshapeFunc(changeViewport);
     glutDisplayFunc(render);
 
-    glutKeyboardFunc(selectExt);
+    glutKeyboardFunc(controlKey);
 
     /*
     GLenum err = glewInit();

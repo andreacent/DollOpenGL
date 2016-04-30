@@ -17,7 +17,7 @@ float   rotT=0.0,rotC=0.0,   //Torso, cabeza
         rotPi=0.0,rotPd=0.0, //pierna
         rotRi=0.0,rotRd=0.0, //rodilla
         rotTi=0.0,rotTd=0.0, //tobillo
-        ang = 30.0;          //angulo
+        ang = 1.0;          //angulo
 
 char    area;
 
@@ -59,7 +59,7 @@ void changeColor(){
 //  DIBUJA CIRCUNFERENCIA
 void drawCircle(float px, float py, float radio) {
     float x,y;
-    glPointSize(2.0);
+    glPointSize(3.0);
     glBegin(GL_POINTS);
         for(double i=0.0; i<10; i+=0.001){
             x=radio*cos(i)+px;
@@ -199,11 +199,16 @@ void render(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_POINT_SMOOTH); 
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
     GLfloat zExtent, xExtent, xLocal, zLocal;
     int loopX, loopZ;
 
     glTranslatef(0.0,-1.5,0.0); 
-    glEnable(GL_POINT_SMOOTH); //para puntos redondos
 
     // Parte inferior del cuerpo
     glBegin(GL_LINES);
@@ -295,7 +300,7 @@ int main (int argc, char** argv) {
     glutReshapeFunc(changeViewport);
 
     initializeColor();
-    glLineWidth(2.0);
+    glLineWidth(3.0);
     glutDisplayFunc(render);
 
     glutKeyboardFunc(controlKey);

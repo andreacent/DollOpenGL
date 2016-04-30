@@ -29,7 +29,7 @@ float   rBi, rBd, bBi, bBd, // brazo
         bMi, bMd, // muneca
         bTi, bTd, // tobillo
         rC, // cabeza
-        rT; //
+        rT; // torso
 
 // INICIALIZO LOS COLORES
 void initializeColor(){
@@ -58,13 +58,13 @@ void changeColor(){
 
 //  DIBUJA CIRCUNFERENCIA
 void drawCircle(float px, float py, float radio) {
-    float calx,caly;
+    float x,y;
     glPointSize(1.0);
     glBegin(GL_POINTS);
         for(double i=0.0; i<10; i+=0.001){
-            calx=radio*cos(i)+px;
-            caly=radio*sin(i)+py;
-            glVertex2f(calx,caly);
+            x=radio*cos(i)+px;
+            y=radio*sin(i)+py;
+            glVertex2f(x,y);
         }
     glEnd();
 }

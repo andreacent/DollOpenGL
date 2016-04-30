@@ -59,7 +59,7 @@ void changeColor(){
 //  DIBUJA CIRCUNFERENCIA
 void drawCircle(float px, float py, float radio) {
     float x,y;
-    glPointSize(1.0);
+    glPointSize(2.0);
     glBegin(GL_POINTS);
         for(double i=0.0; i<10; i+=0.001){
             x=radio*cos(i)+px;
@@ -295,6 +295,7 @@ int main (int argc, char** argv) {
     glutReshapeFunc(changeViewport);
 
     initializeColor();
+    glLineWidth(2.0);
     glutDisplayFunc(render);
 
     glutKeyboardFunc(controlKey);

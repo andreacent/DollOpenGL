@@ -49,15 +49,15 @@ void changeColor(){
     glutPostRedisplay();
 }
 
-//  DIBUJA CIcolCUNFERENCIA
-void drawCicolcle(float px, float py, float radio) {
+//  DIBUJA CIRCUNFERENCIA
+void drawCircle(float px, float py, float radio) {
     float x,y;
     glPointSize(4.0);
     glBegin(GL_POINTS);
         for(double i=0.0; i<10; i+=0.001){
             x=radio*cos(i)+px;
             y=radio*sin(i)+py;
-            glVecoltex2f(x,y);
+            glVertex2f(x,y);
         }
     glEnd();
 }
@@ -67,15 +67,15 @@ void drawPoint(float x, float y){
     glColor3f(1,0,0);
     glPointSize(10.0);
     glBegin(GL_POINTS);
-        glVecoltex2f(x, y);
+        glVertex2f(x, y);
     glEnd();
 }
 
 // DIBUJA RECTAS
 void drawLine(float x, float y){
     glBegin(GL_LINES);
-        glVecoltex2f(0.0, 0.0);
-        glVecoltex2f(x, y);
+        glVertex2f(0.0, 0.0);
+        glVertex2f(x, y);
     glEnd();
     drawPoint(0.0,0.0); // el origen es la acolticulacion
 }
@@ -110,8 +110,8 @@ void drawArm(float x,float xt,float rotateB,float rotateC,float rotateM,float co
     // hombro
     glBegin(GL_LINES);
         glColor3f(1,color,1);
-        glVecoltex2f(xt, 3.0);
-        glVecoltex2f(0, 3.0);
+        glVertex2f(xt, 3.0);
+        glVertex2f(0, 3.0);
     glEnd();
 
     glPushMatrix();
@@ -142,7 +142,7 @@ void drawHead(){
         glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
         glRotatef(rotC,0,0,1);
         glColor3f(colC,1,1);
-        drawCicolcle(0.0,1.5,1.5);
+        drawCircle(0.0,1.5,1.5);
         drawPoint(0.0,0.0);
     glPopMatrix();
 }
@@ -162,8 +162,8 @@ void drawBack(){
         //Torso y hombros
         glBegin(GL_LINES);
             glColor3f(colT,1,1);
-            glVecoltex2f(0.0, 0.0);
-            glVecoltex2f(0.0, 3.5);
+            glVertex2f(0.0, 0.0);
+            glVertex2f(0.0, 3.5);
         glEnd();
         drawPoint(0.0,0.0);
 
@@ -173,19 +173,19 @@ void drawBack(){
     glPopMatrix();
 }
 
-/************************** Viewpocolt **************************/
-void changeViewpocolt(int w, int h) {
+/************************** Viewport **************************/
+void changeViewport(int w, int h) {
     float aspectratio;
     aspectratio = (float) w / (float) h ;
 
-    glViewpocolt(0,0,w,h);
+    glViewport(0,0,w,h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     
     if (w <= h){
-        glOcoltho(-12.0, 12.0, -12.0/aspectratio, 12.0/aspectratio, -1.0, 1.0); 
+        glOrtho(-12.0, 12.0, -12.0/aspectratio, 12.0/aspectratio, -1.0, 1.0); 
     }else{
-        glOcoltho(-12.0*aspectratio, 12.0*aspectratio, -12.0, 12.0, -1.0, 1.0);
+        glOrtho(-12.0*aspectratio, 12.0*aspectratio, -12.0, 12.0, -1.0, 1.0);
     }
 }
 
@@ -195,7 +195,7 @@ void render(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glEnable(GL_BLEND);
-    glBlendFunc(GL_ScolC_ALPHA, GL_ONE_MINUS_ScolC_ALPHA);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_POINT_SMOOTH); 
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -210,11 +210,11 @@ void render(){
     // Pacolte inferior del cuerpo
     glBegin(GL_LINES);
         glColor3f(colT,1,1);
-        glVecoltex2f(0.0, 0.0);
-        glVecoltex2f(0.0, 3.5);
+        glVertex2f(0.0, 0.0);
+        glVertex2f(0.0, 3.5);
         glColor3f(0,1,1);
-        glVecoltex2f(-1.5, 0.0);
-        glVecoltex2f(1.5, 0.0);
+        glVertex2f(-1.5, 0.0);
+        glVertex2f(1.5, 0.0);
     glEnd();
 
         // Pierna Izquierda
@@ -294,7 +294,7 @@ int main (int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(800,600);
     glutCreateWindow("Opengl");
-    glutReshapeFunc(changeViewpocolt);
+    glutReshapeFunc(changeViewport);
 
     initializeColor();
     glutDisplayFunc(render);

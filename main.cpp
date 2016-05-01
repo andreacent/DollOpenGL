@@ -62,7 +62,7 @@ void drawCircle(float px, float py, float radio) {
     glEnd();
 }
 
-//  DIBUJA UN PUNTO (AcolTICULACION)
+//  DIBUJA UN PUNTO (ARTICULACION)
 void drawPoint(float x, float y){
     glColor3f(1,0,0);
     glPointSize(10.0);
@@ -77,7 +77,7 @@ void drawLine(float x, float y){
         glVertex2f(0.0, 0.0);
         glVertex2f(x, y);
     glEnd();
-    drawPoint(0.0,0.0); // el origen es la acolticulacion
+    drawPoint(0.0,0.0); // el origen es la articulacion
 }
 
 /***************************** DIBUJAR CUERPO ********************************/
@@ -147,7 +147,7 @@ void drawHead(){
     glPopMatrix();
 }
 
-// DIBUJA PAcolTE DE ARgRIBA DEL CUERPO
+// DIBUJA PARTE DE ARRIBA DEL CUERPO
 void drawBack(){
     glPushMatrix();
         glTranslatef(0.0,3.5,0.0); //muevo el eje del Torso
@@ -284,7 +284,6 @@ void controlKey (unsigned char key, int xmouse, int ymouse){
             area = key; changeColor(); 
         break;
     }
-    //initializeColor();
     glutPostRedisplay(); 
 }
 

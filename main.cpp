@@ -24,7 +24,8 @@ char    area;
 /************************* COLORES *************************/
 float   rbBbMi, rbBbMd,     // red blue brazo y blue muneca
         rbPbTi, rbPbTd,     // red blue pierna y blue tobillo
-        rCi, rCd, bCi, bCd, // codo
+        rgCi, rgCd, QUITAR, QUITAR, // codo
+        rgCi, rgCd, // red green codo
         rRi, rRd, bRi, bRd, // rodilla
         rC,                 // cabeza
         rT;                 // torso
@@ -33,7 +34,8 @@ float   rbBbMi, rbBbMd,     // red blue brazo y blue muneca
 void initializeColor(){
     rbBbMi=0; rbBbMd=0;
     rbPbTi=0; rbPbTd=0;
-    rCi=0.2; rCd=0.2; bCi=0.4; bCd=0.4;
+    rgCi=0; rgCd=0;
+    rgCi=0.2; rgCd=0.2; QUITAR=0.4; QUITAR=0.4;
     rRi=0.2; rRd=0.2; bRi=0.4; bRd=0.4;
     rC=0; rT=0; 
 }
@@ -44,11 +46,11 @@ void changeColor(){
     switch (area){
         case '1': rbPbTd=1; rRd=1; bRd=1; break;
         case '2': rbPbTi=1; rRi=1; bRi=1; break;
-        case '3': rbBbMd=1; rCd=1; bCd=1; break;
-        case '4': rbBbMi=1; rCi=1; bCi=1; break;
+        case '3': rbBbMd=1; rgCd=1; QUITAR=1; break;
+        case '4': rbBbMi=1; rgCi=1; QUITAR=1; break;
         case '5': rC=1; break;
-        case '6': rbBbMi=1; rCi=1; bCi=1;  
-                  rbBbMd=1; rCd=1; bCd=1;
+        case '6': rbBbMi=1; rgCi=1; QUITAR=1;  
+                  rbBbMd=1; rgCd=1; QUITAR=1;
                   rT=1; rC=1; break;
         default: break;
     }
@@ -114,14 +116,14 @@ void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT,
 
 // DIBUJA BRAZO
 void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM,
-             float rbBbM,float rC,float bC){
+             float rbBbM,float rgC){
     glPushMatrix();
         glTranslatef(xt,3.0,0.0);
         glRotatef(rotateB,0,0,1);
         glColor3f(rbBbM,1,rbBbM);
         drawLine(x,0.0);
         //codo
-        glColor3f(rC,1,bC);
+        glColor3f(rgC,1,1);
         glPushMatrix();
             glTranslatef(x,0.0,0.0);
             glRotatef(rotateC,0,0,1);
@@ -172,10 +174,10 @@ void drawBack(){
         drawHead();
 
         // Brazo izquierdo
-        drawArm(2.5,2.0,rotBi,rotCi,rotMi,rbBbMi,rCi,bCi);
+        drawArm(2.5,2.0,rotBi,rotCi,rotMi,rbBbMi,rgCi);
 
         // Brazo derecho
-        drawArm(-2.5,-2.0,rotBd,rotCd,rotMd,rbBbMd,rCd,bCd);
+        drawArm(-2.5,-2.0,rotBd,rotCd,rotMd,rbBbMd,rgCd);
 
     glPopMatrix();
 }

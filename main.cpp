@@ -238,6 +238,7 @@ void supExt(int n){
         case '3': rotBd+=n*ang; break;
         case '4': rotBi+=n*ang; break;
         case '5': rotC +=n*ang; break;
+        case '6': rotT +=n*ang; break;
         default: break;
     }
 }
@@ -249,7 +250,6 @@ void medExt(int n){
         case '2': rotRi+=n*ang; break;
         case '3': rotCd+=n*ang; break;
         case '4': rotCi+=n*ang; break;
-        case '6': rotT +=n*ang; break;
         default: break;
     }
 }

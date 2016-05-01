@@ -22,87 +22,80 @@ float   rotT=0.0,rotC=0.0,   //Torso, cabeza
 char    area;
 
 /************************* COLORES *************************/
-float   rbBbMi, rbBbMd,     // red blue brazo y blue muneca
-        rbPbTi, rbPbTd,     // red blue pierna y blue tobillo
-        rgCi, rgCd, // red green codo
-        rRi, rRd, bRi, bRd, // rodilla
-        rC,                 // cabeza
-        rT;                 // torso
+float   colBi, colBd, // red blue brazo, blue muneca, red green codo
+        colPi, colPd, // red blue pierna, blue tobillo, red green rodilla
+        colC,         // red cabeza
+        colT;         // red torso
 
 // INICIALIZO LOS COLORES
 void initializeColor(){
-    rbBbMi=0; rbBbMd=0;
-    rbPbTi=0; rbPbTd=0;
-    rgCi=0; rgCd=0;
-    rRi=0.2; rRd=0.2; bRi=0.4; bRd=0.4;
-    rC=0; rT=0; 
+    colBi=0; colBd=0;
+    colPi=0; colPd=0;
+    colC=0;  colT=0; 
 }
 
 // INICIALIZO LOS COLORES
 void changeColor(){
     initializeColor();
     switch (area){
-        case '1': rbPbTd=1; rRd=1; bRd=1; break;
-        case '2': rbPbTi=1; rRi=1; bRi=1; break;
-        case '3': rbBbMd=1; rgCd=1; break;
-        case '4': rbBbMi=1; rgCi=1; break;
-        case '5': rC=1; break;
-        case '6': rbBbMi=1; rgCi=1;  
-                  rbBbMd=1; rgCd=1;
-                  rT=1; rC=1; break;
+        case '1': colPd=1; break;
+        case '2': colPi=1; break;
+        case '3': colBd=1; break;
+        case '4': colBi=1; break;
+        case '5': colC=1;  break;
+        case '6': colBi=1; colBd=1; colT=1; colC=1; break;
         default: break;
     }
     glutPostRedisplay();
 }
 
-//  DIBUJA CIRCUNFERENCIA
-void drawCircle(float px, float py, float radio) {
+//  DIBUJA CIcolCUNFERENCIA
+void drawCicolcle(float px, float py, float radio) {
     float x,y;
     glPointSize(4.0);
     glBegin(GL_POINTS);
         for(double i=0.0; i<10; i+=0.001){
             x=radio*cos(i)+px;
             y=radio*sin(i)+py;
-            glVertex2f(x,y);
+            glVecoltex2f(x,y);
         }
     glEnd();
 }
 
-//  DIBUJA UN PUNTO (ARTICULACION)
+//  DIBUJA UN PUNTO (AcolTICULACION)
 void drawPoint(float x, float y){
     glColor3f(1,0,0);
     glPointSize(10.0);
     glBegin(GL_POINTS);
-        glVertex2f(x, y);
+        glVecoltex2f(x, y);
     glEnd();
 }
 
 // DIBUJA RECTAS
 void drawLine(float x, float y){
     glBegin(GL_LINES);
-        glVertex2f(0.0, 0.0);
-        glVertex2f(x, y);
+        glVecoltex2f(0.0, 0.0);
+        glVecoltex2f(x, y);
     glEnd();
-    drawPoint(0.0,0.0); // el origen es la articulacion
+    drawPoint(0.0,0.0); // el origen es la acolticulacion
 }
 
 /***************************** DIBUJAR CUERPO ********************************/
 // DIBUJA PIERNA
-void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT,
-             float rbPbT,float rR,float bR){
+void drawLeg(float x,float y,float rotateP,float rotateR,float rotateT,float color){
     glPushMatrix();
         glTranslatef(x,0.0,0.0); //muevo el eje de la pierna izq
         glRotatef(rotateP,0,0,1);
-        glColor3f(rbPbT,1,rbPbT);
+        glColor3f(color,1,color);
         drawLine(0.0, y);
         //rodilla
-        glColor3f(rR,1,bR);
+        glColor3f(color,color,1);
         glPushMatrix();
             glTranslatef(0.0,y,0.0);
             glRotatef(rotateR,0,0,1);
             drawLine(0.0, y);
             //tobillo
-            glColor3f(1,1,rbPbT);
+            glColor3f(1,1,color);
             glPushMatrix();
                 glTranslatef(0.0,y,0.0);
                 glRotatef(rotateT,0,0,1);
@@ -113,21 +106,27 @@ void drawLeg(float x, float y,float rotateP,float rotateR,float rotateT,
 }
 
 // DIBUJA BRAZO
-void drawArm(float x, float xt,float rotateB,float rotateC,float rotateM,
-             float rbBbM,float rgC){
+void drawArm(float x,float xt,float rotateB,float rotateC,float rotateM,float color){
+    // hombro
+    glBegin(GL_LINES);
+        glColor3f(1,color,1);
+        glVecoltex2f(xt, 3.0);
+        glVecoltex2f(0, 3.0);
+    glEnd();
+
     glPushMatrix();
         glTranslatef(xt,3.0,0.0);
         glRotatef(rotateB,0,0,1);
-        glColor3f(rbBbM,1,rbBbM);
+        glColor3f(color,1,color);
         drawLine(x,0.0);
         //codo
-        glColor3f(rgC,1,1);
+        glColor3f(color,color,1);
         glPushMatrix();
             glTranslatef(x,0.0,0.0);
             glRotatef(rotateC,0,0,1);
             drawLine(x,0.0);
             //muneca
-            glColor3f(1,1,rbBbM);
+            glColor3f(1,1,color);
             glPushMatrix();
                 glTranslatef(x,0.0,0.0);
                 glRotatef(rotateM,0,0,1);
@@ -142,57 +141,51 @@ void drawHead(){
     glPushMatrix();
         glTranslatef(0.0,3.5,0.0); //muevo el eje de la cabeza
         glRotatef(rotC,0,0,1);
-        glColor3f(rC,1,1);
-        drawCircle(0.0,1.5,1.5);
+        glColor3f(colC,1,1);
+        drawCicolcle(0.0,1.5,1.5);
         drawPoint(0.0,0.0);
     glPopMatrix();
 }
 
-// DIBUJA PARTE DE ARRIBA DEL CUERPO
+// DIBUJA PAcolTE DE ARgRIBA DEL CUERPO
 void drawBack(){
     glPushMatrix();
         glTranslatef(0.0,3.5,0.0); //muevo el eje del Torso
         glRotatef(rotT,0,0,1);
 
+        // Brazo izquierdo
+        drawArm(2.5,2.0,rotBi,rotCi,rotMi,colBi);
+
+        // Brazo derecho
+        drawArm(-2.5,-2.0,rotBd,rotCd,rotMd,colBd);
+
         //Torso y hombros
         glBegin(GL_LINES);
-            glColor3f(rT,1,1);
-            glVertex2f(0.0, 0.0);
-            glVertex2f(0.0, 3.5);
-            glColor3f(rbBbMd,rbBbMd,1);
-            glVertex2f(-2.0, 3.0);
-            glVertex2f(0, 3.0);
-            glColor3f(rbBbMi,rbBbMi,1);
-            glVertex2f(0, 3.0);
-            glVertex2f(2.0, 3.0);
+            glColor3f(colT,1,1);
+            glVecoltex2f(0.0, 0.0);
+            glVecoltex2f(0.0, 3.5);
         glEnd();
         drawPoint(0.0,0.0);
 
         // Cabeza
         drawHead();
 
-        // Brazo izquierdo
-        drawArm(2.5,2.0,rotBi,rotCi,rotMi,rbBbMi,rgCi);
-
-        // Brazo derecho
-        drawArm(-2.5,-2.0,rotBd,rotCd,rotMd,rbBbMd,rgCd);
-
     glPopMatrix();
 }
 
-/************************** Viewport **************************/
-void changeViewport(int w, int h) {
+/************************** Viewpocolt **************************/
+void changeViewpocolt(int w, int h) {
     float aspectratio;
     aspectratio = (float) w / (float) h ;
 
-    glViewport(0,0,w,h);
+    glViewpocolt(0,0,w,h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     
     if (w <= h){
-        glOrtho(-12.0, 12.0, -12.0/aspectratio, 12.0/aspectratio, -1.0, 1.0); 
+        glOcoltho(-12.0, 12.0, -12.0/aspectratio, 12.0/aspectratio, -1.0, 1.0); 
     }else{
-        glOrtho(-12.0*aspectratio, 12.0*aspectratio, -12.0, 12.0, -1.0, 1.0);
+        glOcoltho(-12.0*aspectratio, 12.0*aspectratio, -12.0, 12.0, -1.0, 1.0);
     }
 }
 
@@ -202,7 +195,7 @@ void render(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_ScolC_ALPHA, GL_ONE_MINUS_ScolC_ALPHA);
     glEnable(GL_LINE_SMOOTH);
     glEnable(GL_POINT_SMOOTH); 
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
@@ -214,23 +207,23 @@ void render(){
 
     glTranslatef(0.0,-1.5,0.0); 
 
-    // Parte inferior del cuerpo
+    // Pacolte inferior del cuerpo
     glBegin(GL_LINES);
-        glColor3f(rT,1,1);
-        glVertex2f(0.0, 0.0);
-        glVertex2f(0.0, 3.5);
+        glColor3f(colT,1,1);
+        glVecoltex2f(0.0, 0.0);
+        glVecoltex2f(0.0, 3.5);
         glColor3f(0,1,1);
-        glVertex2f(-1.5, 0.0);
-        glVertex2f(1.5, 0.0);
+        glVecoltex2f(-1.5, 0.0);
+        glVecoltex2f(1.5, 0.0);
     glEnd();
 
         // Pierna Izquierda
-    drawLeg(1.5, -4.0,rotPi,rotRi,rotTi,rbPbTi,rRi,bRi);
+    drawLeg(1.5, -4.0,rotPi,rotRi,rotTi,colPi);
 
         // Pierna Derecho
-    drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd,rbPbTd,rRd,bRd);
+    drawLeg(-1.5, -4.0,rotPd,rotRd,rotTd,colPd);
 
-    // Parte superior del cuerpo
+    // Pacolte superior del cuerpo
     drawBack();
 
     glutSwapBuffers();
@@ -301,7 +294,7 @@ int main (int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(800,600);
     glutCreateWindow("Opengl");
-    glutReshapeFunc(changeViewport);
+    glutReshapeFunc(changeViewpocolt);
 
     initializeColor();
     glutDisplayFunc(render);
@@ -309,9 +302,9 @@ int main (int argc, char** argv) {
     glutKeyboardFunc(controlKey);
 
     /*
-    GLenum err = glewInit();
-    if (GLEW_OK != err) {
-        fprintf(stderr, "GLEW error");
+    GLenum ergr = glewInit();
+    if (GLEW_OK != ergr) {
+        fprintf(stdergr, "GLEW ergror");
         return 1;
     }*/
     

@@ -24,7 +24,6 @@ char    area;
 /************************* COLORES *************************/
 float   rbBbMi, rbBbMd,     // red blue brazo y blue muneca
         rbPbTi, rbPbTd,     // red blue pierna y blue tobillo
-        rgCi, rgCd, QUITAR, QUITAR, // codo
         rgCi, rgCd, // red green codo
         rRi, rRd, bRi, bRd, // rodilla
         rC,                 // cabeza
@@ -35,7 +34,6 @@ void initializeColor(){
     rbBbMi=0; rbBbMd=0;
     rbPbTi=0; rbPbTd=0;
     rgCi=0; rgCd=0;
-    rgCi=0.2; rgCd=0.2; QUITAR=0.4; QUITAR=0.4;
     rRi=0.2; rRd=0.2; bRi=0.4; bRd=0.4;
     rC=0; rT=0; 
 }
@@ -46,11 +44,11 @@ void changeColor(){
     switch (area){
         case '1': rbPbTd=1; rRd=1; bRd=1; break;
         case '2': rbPbTi=1; rRi=1; bRi=1; break;
-        case '3': rbBbMd=1; rgCd=1; QUITAR=1; break;
-        case '4': rbBbMi=1; rgCi=1; QUITAR=1; break;
+        case '3': rbBbMd=1; rgCd=1; break;
+        case '4': rbBbMi=1; rgCi=1; break;
         case '5': rC=1; break;
-        case '6': rbBbMi=1; rgCi=1; QUITAR=1;  
-                  rbBbMd=1; rgCd=1; QUITAR=1;
+        case '6': rbBbMi=1; rgCi=1;  
+                  rbBbMd=1; rgCd=1;
                   rT=1; rC=1; break;
         default: break;
     }

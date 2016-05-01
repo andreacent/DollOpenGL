@@ -2,7 +2,7 @@ Computación Gráfica I | USB
 Proyecto 1: OpenGL 
 
 Compilar:
-cmake
+cmake CMakeLists.txt
 make
 
 Ejecutar:
@@ -23,3 +23,6 @@ S - Rotar extremidad del medio antihorario.
 X - Rotar extremidad del medio horario.  
 D - Rotar extremidad inferior anti horario.  
 C - Rotar extremidad inferior horario. 
+
+Ejemplo:
+![Alt text](/ejemplo.png?raw=true "Ejemplo OpenGL")

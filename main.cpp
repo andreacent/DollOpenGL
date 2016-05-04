@@ -3,6 +3,12 @@
 #include <GL/gl.h>
 #include <math.h>
 
+/* 
+    Andrea Centeno
+    carnet: 10-10138
+    abr-jul 2016
+*/
+
 using namespace std;
 
 #define DEF_floorGridScale  1.0f
@@ -33,66 +39,6 @@ void initializeColor(){
     colBi=0; colBd=0;
     colPi=0; colPd=0;
     colC=0;  colT=0; 
-}
-
-// INICIALIZO LOS COLORES
-void changeColor(){
-    switch (area){
-        case '0': initializeColor(); 
-            if(active==0) active =1;
-            else active = 0;
-        break; //deseleccionar 
-        case '1': initializeColor(); colPd=1; break;
-        case '2': initializeColor(); colPi=1; break;
-        case '3': initializeColor(); colBd=1; break;
-        case '4': initializeColor(); colBi=1; break;
-        case '5': initializeColor(); colC=1;  break;
-        case '6': colBi=1; colBd=1; colT=1; colC=1; 
-                  colPi=0; colPd=0;
-        break;
-        default: break;
-    }
-    glutPostRedisplay();
-}
-
-void ejesCoordenada(float w) {
-    
-    glLineWidth(w);
-    glBegin(GL_LINES);
-        glColor3f(1.0,0.0,0.0);
-        glVertex2f(0,10);
-        glVertex2f(0,-10);
-        glColor3f(0.0,0.0,1.0);
-        glVertex2f(10,0);
-        glVertex2f(-10,0);
-    glEnd();
-
-    glLineWidth(w-1.0);
-    int i;
-    glColor3f(0.0,1.0,0.0);
-    glBegin(GL_LINES);
-        for(i = -10; i <=10; i++){
-            if (i!=0) {     
-                if ((i%2)==0){  
-                    glVertex2f(i,0.4);
-                    glVertex2f(i,-0.4);
-
-                    glVertex2f(0.4,i);
-                    glVertex2f(-0.4,i);
-                }else{
-                    glVertex2f(i,0.2);
-                    glVertex2f(i,-0.2);
-
-                    glVertex2f(0.2,i);
-                    glVertex2f(-0.2,i);
-
-                }
-            }
-        }
-        
-    glEnd();
-
-    glLineWidth(1.0);
 }
 
 //  DIBUJA CIRCUNFERENCIA
@@ -184,6 +130,12 @@ void drawArm(float x,float xt,float rotateB,float rotateC,float rotateM,float co
 // DIBUJA CARA
 void drawFace(){
     //ojos y boca
+    glBegin(GL_LINES);
+        glVertex2f(-0.3, 2.1);
+        glVertex2f(-1.0, 2.2);
+        glVertex2f(0.3, 2.1);
+        glVertex2f(1.0, 2.2);
+    glEnd();
     glColor3f(1,1,1);
     drawCircle(-0.6, 1.8, 0.2);
     drawCircle(0.6, 1.8, 0.2);
@@ -212,9 +164,7 @@ void drawHead(){
         glColor3f(colC,1,1);
         drawCircle(0.0,1.5,1.5);
 
-        if (active==1){
-            drawFace();
-        }
+        if (active==1) drawFace();
 
         drawPoint(0.0,0.0);
 
@@ -227,12 +177,6 @@ void drawBack(){
         glTranslatef(0.0,3.5,0.0); //muevo el eje del Torso
         glRotatef(rotT,0,0,1);
 
-        // Brazo izquierdo
-        drawArm(2.5,2.0,rotBi,rotCi,rotMi,colBi);
-
-        // Brazo derecho
-        drawArm(-2.5,-2.0,rotBd,rotCd,rotMd,colBd);
-
         //Torso y hombros
         glBegin(GL_LINES);
             glColor3f(colT,1,1);
@@ -240,6 +184,12 @@ void drawBack(){
             glVertex2f(0.0, 3.5);
         glEnd();
         drawPoint(0.0,0.0);
+
+        // Brazo izquierdo
+        drawArm(2.5,2.0,rotBi,rotCi,rotMi,colBi);
+
+        // Brazo derecho
+        drawArm(-2.5,-2.0,rotBd,rotCd,rotMd,colBd);
 
         // Cabeza
         drawHead();
@@ -275,10 +225,6 @@ void render(){
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
     glLineWidth(4.0);
-
-    GLfloat zExtent, xExtent, xLocal, zLocal;
-    int loopX, loopZ;
-
     glTranslatef(0.0,-1.5,0.0); 
 
     // Pacolte inferior del cuerpo
@@ -354,9 +300,20 @@ void controlKey (unsigned char key, int xmouse, int ymouse){
             infExt(1);  break; 
         case 'C': //Rotar extremidad inferior horario. 
             infExt(-1); break;
-        default: 
-            area = key; changeColor(); 
+        case '0': 
+            area= key; initializeColor(); 
+            if(active==0) active =1;
+            else active = 0;
+        break; //deseleccionar 
+        case '1': area= key; initializeColor(); colPd=1; break;
+        case '2': area= key; initializeColor(); colPi=1; break;
+        case '3': area= key; initializeColor(); colBd=1; break;
+        case '4': area= key; initializeColor(); colBi=1; break;
+        case '5': area= key; initializeColor(); colC=1;  break;
+        case '6': area= key; colBi=1; colBd=1; colT=1; colC=1; 
+                  colPi=0; colPd=0;
         break;
+        default: break;
     }
     glutPostRedisplay(); 
 }

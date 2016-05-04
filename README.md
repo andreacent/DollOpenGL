@@ -24,5 +24,6 @@ X - Rotar extremidad del medio horario.
 D - Rotar extremidad inferior anti horario.  
 C - Rotar extremidad inferior horario. 
 
-Ejemplo:
+Ejemplos:
 ![Alt text](/ejemplo.png?raw=true "Ejemplo OpenGL")
+![Alt text](/pose.jpg?raw=true "Ejemplo OpenGL")

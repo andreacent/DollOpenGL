@@ -20,6 +20,7 @@ float   rotT=0.0,rotC=0.0,   //Torso, cabeza
         ang = 1.0;           //angulo
 
 char    area;
+char    active = 0;
 
 /************************* COLORES *************************/
 float   colBi, colBd, // red blue brazo, blue muneca, red green codo
@@ -36,17 +37,62 @@ void initializeColor(){
 
 // INICIALIZO LOS COLORES
 void changeColor(){
-    initializeColor();
     switch (area){
-        case '1': colPd=1; break;
-        case '2': colPi=1; break;
-        case '3': colBd=1; break;
-        case '4': colBi=1; break;
-        case '5': colC=1;  break;
-        case '6': colBi=1; colBd=1; colT=1; colC=1; break;
+        case '0': initializeColor(); 
+            if(active==0) active =1;
+            else active = 0;
+        break; //deseleccionar 
+        case '1': initializeColor(); colPd=1; break;
+        case '2': initializeColor(); colPi=1; break;
+        case '3': initializeColor(); colBd=1; break;
+        case '4': initializeColor(); colBi=1; break;
+        case '5': initializeColor(); colC=1;  break;
+        case '6': colBi=1; colBd=1; colT=1; colC=1; 
+                  colPi=0; colPd=0;
+        break;
         default: break;
     }
     glutPostRedisplay();
+}
+
+void ejesCoordenada(float w) {
+    
+    glLineWidth(w);
+    glBegin(GL_LINES);
+        glColor3f(1.0,0.0,0.0);
+        glVertex2f(0,10);
+        glVertex2f(0,-10);
+        glColor3f(0.0,0.0,1.0);
+        glVertex2f(10,0);
+        glVertex2f(-10,0);
+    glEnd();
+
+    glLineWidth(w-1.0);
+    int i;
+    glColor3f(0.0,1.0,0.0);
+    glBegin(GL_LINES);
+        for(i = -10; i <=10; i++){
+            if (i!=0) {     
+                if ((i%2)==0){  
+                    glVertex2f(i,0.4);
+                    glVertex2f(i,-0.4);
+
+                    glVertex2f(0.4,i);
+                    glVertex2f(-0.4,i);
+                }else{
+                    glVertex2f(i,0.2);
+                    glVertex2f(i,-0.2);
+
+                    glVertex2f(0.2,i);
+                    glVertex2f(-0.2,i);
+
+                }
+            }
+        }
+        
+    glEnd();
+
+    glLineWidth(1.0);
 }
 
 //  DIBUJA CIRCUNFERENCIA
@@ -135,6 +181,28 @@ void drawArm(float x,float xt,float rotateB,float rotateC,float rotateM,float co
         glPopMatrix();
     glPopMatrix();  
 }
+// DIBUJA CARA
+void drawFace(){
+    //ojos y boca
+    glColor3f(1,1,1);
+    drawCircle(-0.6, 1.8, 0.2);
+    drawCircle(0.6, 1.8, 0.2);
+    glBegin(GL_POLYGON);
+        glVertex2f(0.6,1.1);
+        glVertex2f(-0.6, 1.1);
+        glVertex2f(-0.4, 0.9);
+        glVertex2f(-0.2, 0.5);
+        glVertex2f(0.2, 0.5);
+        glVertex2f(0.4, 0.9);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3f(1,colC,colC);
+        glVertex2f(0, 0.7);
+        glVertex2f(-0.3, 0.5);
+        glVertex2f(0.2, 0.5);
+        glVertex2f(0.4, 0.7);
+    glEnd();
+}
 
 // DIBUJA CABEZA
 void drawHead(){
@@ -143,7 +211,13 @@ void drawHead(){
         glRotatef(rotC,0,0,1);
         glColor3f(colC,1,1);
         drawCircle(0.0,1.5,1.5);
+
+        if (active==1){
+            drawFace();
+        }
+
         drawPoint(0.0,0.0);
+
     glPopMatrix();
 }
 

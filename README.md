@@ -1,29 +1,30 @@
-# Muñequito de palitosComputación Gráfica I | USB
+# Muñequito de palitos
+Computación Gráfica I | USB
 Proyecto 1: OpenGL 
 
 Compilar:
-cmake CMakeLists.txt
-make
+> cmake CMakeLists.txt
+> make
 
 Ejecutar:
-./Proyecto
+> ./Proyecto
 
-Teclas del 1 al 6 selecciona partes del cuerpo:
-1 - Pierna derecha.
-2 - Pierna Izquierda.
-3 - Brazo derecho.
-4 - Brazo Izquierdo.
-5 - Cabeza.
-6 - Torso.
-0 - Deseleccionar y activar rostro.
+Teclas del 0 al 6 para seleccionar partes del cuerpo:
+*0* - Deseleccionar y activar rostro.
+*1* - Pierna derecha.
+*2* - Pierna Izquierda.
+*3* - Brazo derecho.
+*4* - Brazo Izquierdo.
+*5* - Cabeza.
+*6* - Torso.
 
 Para mover parte seleccionada:
-A - Rotar extremidad superior anti horario.  
-Z - Rotar extremidad superior horario.  
-S - Rotar extremidad del medio antihorario.  
-X - Rotar extremidad del medio horario.  
-D - Rotar extremidad inferior anti horario.  
-C - Rotar extremidad inferior horario. 
+*A* - Rotar extremidad superior anti horario.  
+*Z* - Rotar extremidad superior horario.  
+*S* - Rotar extremidad del medio antihorario.  
+*X* - Rotar extremidad del medio horario.  
+*D* - Rotar extremidad inferior anti horario.  
+*C* - Rotar extremidad inferior horario.
 
 Ejemplos:
 

@@ -1,4 +1,4 @@
-Computación Gráfica I | USB
+# Muñequito de palitosComputación Gráfica I | USB
 Proyecto 1: OpenGL 
 
 Compilar:
